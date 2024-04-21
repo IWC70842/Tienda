@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Articulo implements Serializable{
+public class Articulo implements Serializable, Comparable<Articulo>{
   private String idArticulo;
   private String descripcion;
   private int existencias;
@@ -47,8 +47,12 @@ public class Articulo implements Serializable{
 
   @Override
   public String toString() {
-    return "Articulo [idArticulo=" + idArticulo + ", descripcion=" + descripcion + ", existencias=" + existencias
-        + ", pvp=" + pvp + "]";
+    return idArticulo + " - "  + descripcion + " - " + existencias + " - " + pvp;
+  }
+
+  @Override
+  public int compareTo(Articulo a) {
+    return this.idArticulo.compareTo(a.idArticulo);
   }
 
 
