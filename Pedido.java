@@ -2,7 +2,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Pedido implements Serializable, Comparable<Pedido>{
+
+public class Pedido implements Serializable{
 
   private String idPedido;
   private Cliente clientePedido;
@@ -48,11 +49,13 @@ public class Pedido implements Serializable, Comparable<Pedido>{
     this.cestaCompra = cestaCompra;
   }
 
-  @Override
-  public int compareTo(Pedido o) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
-  }
+  
+
+ 
+
+  
+
+  
   
   
 

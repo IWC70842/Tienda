@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Cliente implements Serializable{
+public class Cliente implements Serializable, Comparable<Cliente>{
 
   private String dni;
   private String nombre;
@@ -44,6 +44,16 @@ public class Cliente implements Serializable{
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  @Override
+  public String toString() {
+    return "Cliente [dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono + ", email=" + email + "]";
+  }
+
+  @Override
+  public int compareTo(Cliente c) {
+    return this.nombre.compareTo(c.nombre);
   }
 
   

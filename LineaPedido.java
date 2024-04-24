@@ -1,6 +1,5 @@
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 
 public class LineaPedido implements Serializable{
   private String idArticulo;
@@ -26,6 +25,13 @@ public class LineaPedido implements Serializable{
   public void setUnidades(int unidades) {
     this.unidades = unidades;
   }
+
+  @Override
+  public String toString() {
+    return "LineaPedido [idArticulo=" + idArticulo + ", unidades=" + unidades + "]";
+  }
+
+ 
 
 
 
