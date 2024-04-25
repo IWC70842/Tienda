@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Scanner;
 
 // COSAS A PULIR
-// REVISAR SI SE PUEDE HACER CON UN METODO VALIDAR DNI EN VEZ DE USAR UN REGEX DE CARACTERES Y LO MISMO CON ID PEDIDO
-//
+// REVISAR SI SE PUEDE HACER CON UN METODO VALIDAR ID PEDIDO EN VEZ DE USAR UN REGEX DE CARACTERES 
 
 public class Tienda {
 
@@ -166,7 +165,7 @@ public class Tienda {
     if (clientes.containsKey(dniT)) {
       int opcion = 0;
       do {
-        System.out.println("\n\t\t\t\tSE VA A MODIFICAR EL CONTACTO DE:\n" + clientes.get(dniT).getNombre());
+        System.out.println("\n\t\t\t\tSE VA A MODIFICAR EL CONTACTO DE:\n" + "\t\t\t"+clientes.get(dniT).getNombre());
         System.out.println("\t\t\t\t1 - MODIFICAR EL TELEFONO");
         System.out.println("\t\t\t\t2 - MODIFICAR EL EMAIL");
         System.out.println("\n\t\t\t\t9 - SALIR");
@@ -416,6 +415,7 @@ public class Tienda {
       System.out.println("\t\t\t\t1 - NUEVO PEDIDO");
       System.out.println("\t\t\t\t2 - LISTADOS");
       System.out.println("\t\t\t\t3 - TOTAL PEDIDO");
+      System.out.println("\t\t\t\t4 - ELIMINAR PEDIDO");
       System.out.println("\n\t\t\t\t9 - SALIR");
       opcionStr = sc.next();
       if (opcionStr.matches("^[1-3]|9$")) {
@@ -433,10 +433,14 @@ public class Tienda {
             totalPedido();
             break;
           }
+          case 4: {
+            eliminarPedido();
+            break;
+          }
         }
       } else {
         System.out
-            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 3, O UN 9 PARA SALIR.");
+            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
       }
     } while (opcion != 9);
   }
@@ -609,6 +613,10 @@ public class Tienda {
     }
   }
 
+  public void eliminarPedido(){
+    // Falta el código
+  }
+  
   // METODO AUXILIAR PARA GENERAR IDS PEDIDOS
 
   private String generaIdPedido(String dni) {
@@ -623,7 +631,7 @@ public class Tienda {
     nuevoId = dni + "-" + String.format("%03d", contador) + "/" + LocalDate.now().getYear();
     return nuevoId;
   }
-  // FALTA SUBMENU BACKUP
+ 
 
   // METODO AUXILIAR VALIDAR SI UN STRING ES UN ENTERO
 
@@ -761,20 +769,6 @@ public class Tienda {
     }
   }
 
-  public void clientesTxtLeer() {
-    File fClientes = new File("/clientes/clientes.csv");
-    try (Scanner scClientes = new Scanner(fClientes)) {
-      while (scClientes.hasNextLine()) {
-        String[] atributos = scClientes.nextLine().split("[,]");
-        for (String s : atributos) {
-          System.out.println(s + "-");
-        }
-        System.out.println("\n");
-      }
 
-    } catch (IOException e) {
-      System.out.println("ERROR ENTRADA/SALIDA:" + e);
-    }
-  }
 
 }

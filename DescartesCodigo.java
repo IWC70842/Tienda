@@ -107,4 +107,19 @@
     return letras.charAt(numero % 23);
   }*/
 
+  /*  public void clientesTxtLeer() {
+    File fClientes = new File("/clientes/clientes.csv");
+    try (Scanner scClientes = new Scanner(fClientes)) {
+      while (scClientes.hasNextLine()) {
+        String[] atributos = scClientes.nextLine().split("[,]");
+        for (String s : atributos) {
+          System.out.println(s + "-");
+        }
+        System.out.println("\n");
+      }
+
+    } catch (IOException e) {
+      System.out.println("ERROR ENTRADA/SALIDA:" + e);
+    }
+  } */
 

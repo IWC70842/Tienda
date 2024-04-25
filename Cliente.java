@@ -48,7 +48,7 @@ public class Cliente implements Serializable, Comparable<Cliente>{
 
   @Override
   public String toString() {
-    return "Cliente [dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono + ", email=" + email + "]";
+    return "\t\t\tCLIENTE -> DNI: " + dni + ", NOMBRE: " + nombre + ", TELEFONO: " + telefono + ", EMAIL: " + email;
   }
 
   @Override
