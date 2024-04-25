@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 // COSAS A PULIR
 // REVISAR SI SE PUEDE HACER CON UN METODO VALIDAR ID PEDIDO EN VEZ DE USAR UN REGEX DE CARACTERES 
+// IVA EN TOTALES
 
 public class Tienda {
 
@@ -36,7 +37,7 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    // t.leerArchivos();
+    //t.leerArchivos();
     t.cargaDatos();
     t.menu();
   }
@@ -46,7 +47,7 @@ public class Tienda {
   public void menu() {
     String opcionStr;
     int opcion = 0;
-    do {
+    do {      
       System.out.println("\n\n\n\n\n\t\t\t\tMENU DE OPCIONES\n");
       System.out.println("\t\t\t\t1 - ARTICULOS");
       System.out.println("\t\t\t\t2 - CLIENTES");
@@ -82,12 +83,192 @@ public class Tienda {
     } while (opcion != 9);
   }
 
+  // SUBMENU ARTICULOS
+
+  public void menuArticulos() {
+    String opcionStr;
+    int opcion = 0;
+    do {      
+      System.out.println("\n\n\n\n\n\t\t\t\tARTICULOS\n");
+      System.out.println("\t\t\t\t1 - ALTA");
+      System.out.println("\t\t\t\t2 - BAJA");
+      System.out.println("\t\t\t\t3 - REPOSICIÓN");
+      System.out.println("\t\t\t\t4 - LISTADOS");
+      System.out.println("\t\t\t\t9 - SALIR");
+      opcionStr = sc.next();
+      if (opcionStr.matches("^[1-4]|9$")) {
+        opcion = Integer.parseInt(opcionStr);
+        switch (opcion) {
+          case 1: {
+            altaArticulos();
+            break;
+          }
+          case 2: {
+            bajaArticulos();
+            break;
+          }
+          case 3: {
+            reposicionArticulos();
+            break;
+          }
+          case 4: {
+            listarArticulos();
+            break;
+          }
+        }
+      } else {
+        System.out
+            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
+      }
+    } while (opcion != 9);
+  }
+
+  public void altaArticulos() {
+    String idT, descT, exT, pvpT;
+    sc.nextLine();
+    System.out.println("\t\t\tALTA NUEVO ARTICULO");
+
+    // VALIDAMOS CON REGEX LA ID
+
+    do {
+      System.out.println("\n\t\t\tINTRODUCE ID ARTICULO:");
+      idT = sc.nextLine();
+    } while (!idT.matches("[1-5][-][0-9][0-9]") || articulos.containsKey(idT));
+
+    // DESCRIPCION DEL ARTICULO
+
+    System.out.println("\n\t\t\tINTRODUZCA LA DESCRIPCION DEL ARTICULO:");
+    descT = sc.nextLine();
+
+    // VALIDACION DE LAS EXISTENCIAS MEDIANTE METODO AUXILIAR ESINT
+
+    do {
+      System.out.println("\n\t\t\tINTRODUZCA EL NUMERO DE EXISTENCIAS:");
+      exT = sc.next();
+    } while (!esInt(exT));
+
+    // VALIDACION DE PVP MEDIANTE EL METODO AUXILIAR ESDOUBLE
+
+    do {
+      System.out.println("\n\t\t\tINTRODUZCA PVP DEL ARTICULO:");
+      pvpT = sc.next();
+    } while (!esDouble(pvpT));
+
+    // AÑADIMOS EL ARTICULO A LA COLECCION HACIENDO PARSING DE LOS DATOS
+    articulos.put(idT, new Articulo(idT, descT, Integer.parseInt(exT), Double.parseDouble(pvpT)));
+  }
+
+  public void bajaArticulos() {
+    String idT;
+
+    sc.nextLine();
+    System.out.println("\t\t\tBAJA DE UN ARTICULO");
+    // idArticulo VALIDADO CON EXPRESION REGULAR SENCILLA
+    do {
+      System.out.println("\n\t\t\tIdArticulo a ELIMINAR (IDENTIFICADOR):");
+      idT = sc.nextLine();
+    } while (!idT.matches("[1-5][-][0-9][0-9]"));
+    if (articulos.containsKey(idT)) {
+      articulos.remove(idT);
+      System.out.println("\n\t\t\tARTICULO ELIMINADO");
+    } else {
+      System.out.println("\n\t\t\tNO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
+    }
+  }
+
+  public void reposicionArticulos() {
+    String stockMinimo, idT, stockMas;
+    sc.nextLine();
+    do {
+      System.out.println("\n\t\t\tNUMERO DE UNIDADES PARA RUPTURA DE STOCK:");
+      stockMinimo = sc.nextLine(); // Se lee la entrada de EXISTENCIAS como un String
+    } while (!esInt(stockMinimo) && stockMinimo.length() > 0);
+    if (stockMinimo.length() == 0)
+      return;
+
+    System.out.println("\n\t\t\tLISTADO DE ARTICULOS CON " + Integer.parseInt(stockMinimo) + " UNIDADES O MENOS");
+    for (Articulo a : articulos.values()) {
+      if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {
+        System.out.println(a);
+      }
+    }
+
+    do {
+      System.out.println("\n\t\t\tIdArticulo a REPONER (IDENTIFICADOR):");
+      idT = sc.nextLine();
+    } while (!idT.matches("[1-5][-][0-9][0-9]") && idT.length() > 0);
+    if (idT.length() == 0)
+      return;
+
+    do {
+      System.out.println("\n\t\t\tNUMERO DE UNIDADES A REPONER:");
+      stockMas = sc.nextLine(); // Se lee la entrada de EXISTENCIAS como un String
+    } while (!esInt(stockMas) && stockMas.length() > 0);
+    if (stockMas.length() == 0)
+      return;
+    articulos.get(idT).setExistencias(articulos.get(idT).getExistencias() + Integer.parseInt(stockMas));
+  }
+
+  // LISTADOS ARTICULOS
+
+  public void listarArticulos() {
+    String opcion;
+    do {      
+      System.out.println("\n\n\n\n\n\t\t\t\tLISTAR ARTICULOS\n");
+      System.out.println("\t\t\t\t0 - TODOS LOS ARTICULOS");
+      System.out.println("\t\t\t\t1 - PERIFERICOS");
+      System.out.println("\t\t\t\t2 - ALMACENAMIENTO");
+      System.out.println("\t\t\t\t3 - IMPRESORAS");
+      System.out.println("\t\t\t\t4 - MONITORES");
+      System.out.println("\t\t\t\t5 - COMPONENETES");
+      System.out.println("\t\t\t\t6 - SALIR");
+      do
+        opcion = sc.next();
+      while (!opcion.matches("[0-6]"));
+      if (!opcion.equals("6")) {
+        listados(opcion);
+      }
+    } while (!opcion.equals("6"));
+
+  }
+
+  public void listados(String seccion) {
+
+    String[] secciones = { "TODAS", "PERIFERICOS", "ALMACENAMIENTO", "IMPRESORAS", "MONITORES", "COMPONENTES" };
+    sc.nextLine();
+    System.out.println("\n\t\t\t[RETURN]ORDEN NORMAL POR idArticulo - PARA ORDENAR POR PRECIO < a >(-) > a <(+)");
+    String opcion = sc.nextLine();
+    if (seccion.equals("0")) {
+      if (opcion.isBlank()) {
+        articulos.values().stream().sorted().forEach(System.out::println);
+      } else if (opcion.equals("-")) {
+        articulos.values().stream().sorted(new ComparaArticuloPorPrecio()).forEach(System.out::println);
+      } else if (opcion.equals("+")) {
+        articulos.values().stream().sorted(new ComparaArticuloPorPrecio().reversed()).forEach(System.out::println);
+      }
+    } else {
+      System.out.println("\n\t\t\tLISTADO DE LOS ARTICULOS DE LA SECCION (" + secciones[Integer.parseInt(seccion)] + ")");
+      if (opcion.isBlank()) {
+        articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion)).sorted()
+            .forEach(System.out::println);
+      } else if (opcion.equals("-")) {
+        articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion))
+            .sorted(new ComparaArticuloPorPrecio()).forEach(System.out::println);
+      } else if (opcion.equals("+")) {
+        articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion))
+            .sorted(new ComparaArticuloPorPrecio().reversed()).forEach(System.out::println);
+      }
+
+    }
+
+  }
+
   // SUBMENU CLIENTES
 
   public void menuClientes() {
     String opcionStr;
     int opcion = 0;
-    do {
+    do {      
       System.out.println("\n\n\n\n\n\t\t\t\tMENU CLIENTES\n");
       System.out.println("\t\t\t\t1 - AÑADIR CLIENTE");
       System.out.println("\t\t\t\t2 - LISTAR CLIENTES");
@@ -165,7 +346,7 @@ public class Tienda {
     if (clientes.containsKey(dniT)) {
       int opcion = 0;
       do {
-        System.out.println("\n\t\t\t\tSE VA A MODIFICAR EL CONTACTO DE:\n" + "\t\t\t"+clientes.get(dniT).getNombre());
+        System.out.println("\n\t\t\t\tSE VA A MODIFICAR EL CONTACTO DE:\n" + "\t\t\t" + clientes.get(dniT).getNombre());
         System.out.println("\t\t\t\t1 - MODIFICAR EL TELEFONO");
         System.out.println("\t\t\t\t2 - MODIFICAR EL EMAIL");
         System.out.println("\n\t\t\t\t9 - SALIR");
@@ -225,192 +406,12 @@ public class Tienda {
     }
   }
 
-  // SUBMENU ARTICULOS
-
-  public void menuArticulos() {
-    String opcionStr;
-    int opcion = 0;
-    do {
-      System.out.println("\n\n\n\n\n\t\t\t\tARTICULOS\n");
-      System.out.println("\t\t\t\t1 - ALTA");
-      System.out.println("\t\t\t\t2 - BAJA");
-      System.out.println("\t\t\t\t3 - REPOSICIÓN");
-      System.out.println("\t\t\t\t4 - LISTADOS");
-      System.out.println("\t\t\t\t9 - SALIR");
-      opcionStr = sc.next();
-      if (opcionStr.matches("^[1-4]|9$")) {
-        opcion = Integer.parseInt(opcionStr);
-        switch (opcion) {
-          case 1: {
-            altaArticulos();
-            break;
-          }
-          case 2: {
-            bajaArticulos();
-            break;
-          }
-          case 3: {
-            reposicionArticulos();
-            break;
-          }
-          case 4: {
-            listarArticulos();
-            break;
-          }
-        }
-      } else {
-        System.out
-            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
-      }
-    } while (opcion != 9);
-  }
-
-  public void altaArticulos() {
-    String idT, descT, exT, pvpT;
-    sc.nextLine();
-    System.out.println("ALTA NUEVO ARTICULO");
-
-    // VALIDAMOS CON REGEX LA ID
-
-    do {
-      System.out.println("INTRODUCE ID ARTICULO:");
-      idT = sc.nextLine();
-    } while (!idT.matches("[1-5][-][0-9][0-9]") || articulos.containsKey(idT));
-
-    // DESCRIPCION DEL ARTICULO
-
-    System.out.println("INTRODUZCA LA DESCRIPCION DEL ARTICULO:");
-    descT = sc.nextLine();
-
-    // VALIDACION DE LAS EXISTENCIAS
-
-    do {
-      System.out.println("INTRODUZCA EL NUMERO DE EXISTENCIAS:");
-      exT = sc.next();
-    } while (!esInt(exT));
-
-    // VALIDACION DE PVP
-
-    do {
-      System.out.println("INTRODUZCA PVP DEL ARTICULO:");
-      pvpT = sc.next();
-    } while (!esDouble(pvpT));
-
-    // AÑADIMOS EL ARTICULO A LA COLECCION HACIENDO PARSING DE LOS DATOS
-    articulos.put(idT, new Articulo(idT, descT, Integer.parseInt(exT), Double.parseDouble(pvpT)));
-  }
-
-  public void bajaArticulos() {
-    String idT;
-
-    sc.nextLine();
-    System.out.println("BAJA DE UN ARTICULO");
-    // idArticulo VALIDADO CON EXPRESION REGULAR SENCILLA
-    do {
-      System.out.println("IdArticulo a ELIMINAR (IDENTIFICADOR):");
-      idT = sc.nextLine();
-    } while (!idT.matches("[1-5][-][0-9][0-9]"));
-    if (articulos.containsKey(idT)) {
-      articulos.remove(idT);
-      System.out.println("ARTICULO ELIMINADO");
-    } else {
-      System.out.println("NO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
-    }
-  }
-
-  public void reposicionArticulos() {
-    String stockMinimo, idT, stockMas;
-    sc.nextLine();
-    do {
-      System.out.println("NUMERO DE UNIDADES PARA RUPTURA DE STOCK:");
-      stockMinimo = sc.nextLine(); // Se lee la entrada de EXISTENCIAS como un String
-    } while (!esInt(stockMinimo) && stockMinimo.length() > 0);
-    if (stockMinimo.length() == 0)
-      return;
-
-    System.out.println("\t\tLISTADO DE ARTICULOS CON " + Integer.parseInt(stockMinimo) + " UNIDADES O MENOS");
-    for (Articulo a : articulos.values()) {
-      if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {
-        System.out.println(a);
-      }
-    }
-
-    do {
-      System.out.println("IdArticulo a REPONER (IDENTIFICADOR):");
-      idT = sc.nextLine();
-    } while (!idT.matches("[1-5][-][0-9][0-9]") && idT.length() > 0);
-    if (idT.length() == 0)
-      return;
-
-    do {
-      System.out.println("NUMERO DE UNIDADES A REPONER:");
-      stockMas = sc.nextLine(); // Se lee la entrada de EXISTENCIAS como un String
-    } while (!esInt(stockMas) && stockMas.length() > 0);
-    if (stockMas.length() == 0)
-      return;
-    articulos.get(idT).setExistencias(articulos.get(idT).getExistencias() + Integer.parseInt(stockMas));
-  }
-
-  // LISTADOS ARTICULOS
-
-  public void listarArticulos() {
-    String opcion;
-    do {
-      System.out.println("\n\n\n\n\n\t\t\t\tLISTAR ARTICULOS\n");
-      System.out.println("\t\t\t\t0 - TODOS LOS ARTICULOS");
-      System.out.println("\t\t\t\t1 - PERIFERICOS");
-      System.out.println("\t\t\t\t2 - ALMACENAMIENTO");
-      System.out.println("\t\t\t\t3 - IMPRESORAS");
-      System.out.println("\t\t\t\t4 - MONITORES");
-      System.out.println("\t\t\t\t5 - COMPONENETES");
-      System.out.println("\t\t\t\t6 - SALIR");
-      do
-        opcion = sc.next();
-      while (!opcion.matches("[0-6]"));
-      if (!opcion.equals("6")) {
-        listados(opcion);
-      }
-    } while (!opcion.equals("6"));
-
-  }
-
-  public void listados(String seccion) {
-
-    String[] secciones = { "TODAS", "PERIFERICOS", "ALMACENAMIENTO", "IMPRESORAS", "MONITORES", "COMPONENTES" };
-    sc.nextLine();
-    System.out.println("[RETURN]ORDEN NORMAL POR idArticulo - PARA ORDENAR POR PRECIO < a >(-) > a <(+)");
-    String opcion = sc.nextLine();
-    if (seccion.equals("0")) {
-      if (opcion.isBlank()) {
-        articulos.values().stream().sorted().forEach(System.out::println);
-      } else if (opcion.equals("-")) {
-        articulos.values().stream().sorted(new ComparaArticuloPorPrecio()).forEach(System.out::println);
-      } else if (opcion.equals("+")) {
-        articulos.values().stream().sorted(new ComparaArticuloPorPrecio().reversed()).forEach(System.out::println);
-      }
-    } else {
-      System.out.println("LISTADO DE LOS ARTICULOS DE LA SECCION (" + secciones[Integer.parseInt(seccion)] + ")");
-      if (opcion.isBlank()) {
-        articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion)).sorted()
-            .forEach(System.out::println);
-      } else if (opcion.equals("-")) {
-        articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion))
-            .sorted(new ComparaArticuloPorPrecio()).forEach(System.out::println);
-      } else if (opcion.equals("+")) {
-        articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion))
-            .sorted(new ComparaArticuloPorPrecio().reversed()).forEach(System.out::println);
-      }
-
-    }
-
-  }
-
   // SUBMENU PEDIDOS
 
   public void menuPedidos() {
     String opcionStr;
     int opcion = 0;
-    do {
+    do {      
       System.out.println("\n\n\n\n\n\t\t\t\tMENU PEDIDOS\n");
       System.out.println("\t\t\t\t1 - NUEVO PEDIDO");
       System.out.println("\t\t\t\t2 - LISTADOS");
@@ -418,7 +419,7 @@ public class Tienda {
       System.out.println("\t\t\t\t4 - ELIMINAR PEDIDO");
       System.out.println("\n\t\t\t\t9 - SALIR");
       opcionStr = sc.next();
-      if (opcionStr.matches("^[1-3]|9$")) {
+      if (opcionStr.matches("^[1-4]|9$")) {
         opcion = Integer.parseInt(opcionStr);
         switch (opcion) {
           case 1: {
@@ -448,7 +449,7 @@ public class Tienda {
   public void listarPedidos() {
     String opcion;
     sc.nextLine();
-    do {
+    do {      
       System.out.println("\n\n\n\n\n\t\t\t\tLISTAR PEDIDOS\n");
       System.out.println("\t\t\t\t1 - TODOS LOS PEDIDOS ORDENADOS POR IMPORTE TOTAL SIN DESGLOSAR");
       System.out.println("\t\t\t\t2 - PEDIDOS ORDENADOS POR FECHA DESGLOSADOS");
@@ -613,10 +614,22 @@ public class Tienda {
     }
   }
 
-  public void eliminarPedido(){
-    // Falta el código
+  public void eliminarPedido() {
+    String id;
+    sc.nextLine();
+    for (Pedido p : pedidos) {
+      System.out.println(p.getIdPedido() + p.getClientePedido().getNombre());
+      totales.put(p.getIdPedido(), totalPedido(p));
+    }
+    do {
+      System.out.println("\nINTRODUCE EL ID DEL PEDIDO A ELIMINAR: ");
+      id = sc.next();
+    } while (!totales.containsKey(id));
+    String pedidoid = id;// DECLARO LA VARIABLE PERIODO ID PORQUE DEBE SER UNA FINAL O NO MODIFICADA PARA
+                         // PODER USARLA EN LA LAMBDA
+    pedidos.removeIf(p -> p.getIdPedido().equals(pedidoid));
   }
-  
+
   // METODO AUXILIAR PARA GENERAR IDS PEDIDOS
 
   private String generaIdPedido(String dni) {
@@ -631,7 +644,6 @@ public class Tienda {
     nuevoId = dni + "-" + String.format("%03d", contador) + "/" + LocalDate.now().getYear();
     return nuevoId;
   }
- 
 
   // METODO AUXILIAR VALIDAR SI UN STRING ES UN ENTERO
 
@@ -744,7 +756,7 @@ public class Tienda {
       System.out.println("DATOS IMPORTADOS CON EXITO.");
 
     } catch (FileNotFoundException e) {
-      System.out.println(e.toString());
+      System.out.println("\n\n\n\t\t\tERROR AL CARGAR LOS DATOS DE LOS ARCHIVOS DE BACKUP. NO EXISTEN UNO O VARIOS ARCHIVOS.\n\t\t\t"+e.toString());
     } catch (EOFException e) {
 
     } catch (ClassNotFoundException | IOException e) {
@@ -756,19 +768,28 @@ public class Tienda {
     }
   }
 
-  // METODOS BACKUP A ARCHIVOS CSV
+  // METODO BACKUP A ARCHIVOS CSV
 
   public void clientesTxtBackup() {
-    try (BufferedWriter bfwClientes = new BufferedWriter(new FileWriter("/clientes/clientes.csv"))) {
-      for (Cliente c : clientes.values()) {
-        bfwClientes.write(c.getDni() + "," + c.getNombre() + "," + c.getTelefono() + "," + c.getEmail());
+    String ruta = "clientes/clientes.csv";
+    try {
+      File carpeta = new File("clientes");
+      if (!carpeta.exists()) {
+        carpeta.mkdirs();
       }
-      System.out.println("COPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
-    } catch (IOException e) {
-      System.out.println("ERROR ENTRADA/SALIDA:" + e);
+      try (BufferedWriter bfwClientes = new BufferedWriter(new FileWriter(ruta))) {
+        for (Cliente c : clientes.values()) {
+          bfwClientes.write(c.getDni() + "," + c.getNombre() + "," + c.getTelefono() + "," + c.getEmail());
+        }
+        System.out.println("COPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
+      } catch (IOException e) {
+        System.out.println("ERROR ENTRADA/SALIDA:" + e);
+      }
+    } catch (Exception e) {
+      System.out.println("ERROR AL CREAR LA CARPETA: " + e);
     }
   }
 
-
-
+ 
 }
+

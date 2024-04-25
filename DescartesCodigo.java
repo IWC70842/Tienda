@@ -123,3 +123,23 @@
     }
   } */
 
+/*// EXCEPCION PERSONALIZADA PARA CUANDO NO EXISTA EL DNI
+
+public class DniNoExiste extends Exception{
+  public DniNoExiste (String cadena){
+    super(cadena);
+  }
+  
+}
+ */
+
+ /* public void clientesTxtBackup() {
+    try (BufferedWriter bfwClientes = new BufferedWriter(new FileWriter("/clientes/clientes.csv"))) {
+      for (Cliente c : clientes.values()) {
+        bfwClientes.write(c.getDni() + "," + c.getNombre() + "," + c.getTelefono() + "," + c.getEmail());
+      }
+      System.out.println("COPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
+    } catch (IOException e) {
+      System.out.println("ERROR ENTRADA/SALIDA:" + e);
+    }
+  } */
