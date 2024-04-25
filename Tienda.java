@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-
 // COSAS A PULIR
 // REVISAR SI SE PUEDE HACER CON UN METODO VALIDAR DNI EN VEZ DE USAR UN REGEX DE CARACTERES Y LO MISMO CON ID PEDIDO
 //
@@ -40,12 +39,13 @@ public class Tienda {
     Tienda t = new Tienda();
     // t.leerArchivos();
     t.cargaDatos();
-    t.menu();    
+    t.menu();
   }
 
   // MENU PRINCIPAL APLICACION
 
   public void menu() {
+    String opcionStr;
     int opcion = 0;
     do {
       System.out.println("\n\n\n\n\n\t\t\t\tMENU DE OPCIONES\n");
@@ -54,26 +54,31 @@ public class Tienda {
       System.out.println("\t\t\t\t3 - PEDIDOS");
       System.out.println("\t\t\t\t4 - COPIA DE SEGURIDAD");
       System.out.println("\n\t\t\t\t9 - SALIR");
-      opcion = sc.nextInt();
-      switch (opcion) {
-        case 1: {
-          menuArticulos();
-          break;
+      opcionStr = sc.next();
+      if (opcionStr.matches("^[1-4]|9$")) {
+        opcion = Integer.parseInt(opcionStr);
+        switch (opcion) {
+          case 1: {
+            menuArticulos();
+            break;
+          }
+          case 2: {
+            menuClientes();
+            break;
+          }
+          case 3: {
+            menuPedidos();
+            break;
+          }
+          case 4: {
+            backup();
+            clientesTxtBackup();
+            break;
+          }
         }
-        case 2: {
-          // clientesTxtLeer();
-          menuClientes();
-          break;
-        }
-        case 3: {
-          menuPedidos();
-          break;
-        }
-        case 4: {
-          backup();
-          clientesTxtBackup();
-          break;
-        }
+      } else {
+        System.out
+            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
       }
     } while (opcion != 9);
   }
@@ -81,6 +86,7 @@ public class Tienda {
   // SUBMENU CLIENTES
 
   public void menuClientes() {
+    String opcionStr;
     int opcion = 0;
     do {
       System.out.println("\n\n\n\n\n\t\t\t\tMENU CLIENTES\n");
@@ -89,24 +95,25 @@ public class Tienda {
       System.out.println("\t\t\t\t3 - MODIFICAR DATOS CONTACTO");
       System.out.println("\t\t\t\t4 - ELIMINAR CLIENTE");
       System.out.println("\n\t\t\t\t9 - SALIR");
-      opcion = sc.nextInt();
-      switch (opcion) {
-        case 1: {
-          nuevoCliente();
-          break;
+      opcionStr = sc.next();
+      if (opcionStr.matches("^[1-4]|9$")) {
+        opcion = Integer.parseInt(opcionStr);
+        switch (opcion) {
+          case 1:
+            nuevoCliente();
+            break;
+          case 2:
+            listaClientes();
+            break;
+          case 3:
+            modificaCliente();
+            break;
+          case 4:
+            bajaClientes();
+            break;
         }
-        case 2: {
-          listaClientes();
-          break;
-        }
-        case 3: {
-          modificaCliente();
-          break;
-        }
-        case 4: {
-          bajaClientes();
-          break;
-        }
+      } else {
+        System.out.println("OPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
       }
     } while (opcion != 9);
   }
@@ -172,7 +179,7 @@ public class Tienda {
             } while (!telefonoT.matches("[0-9]{8,11}"));
             clientes.get(dniT).setTelefono(telefonoT);
             System.out.println("\nSE HA MODIFICADO EL TELEFONO, EL NUEVO NUMERO PARA EL CONTACTO ES:");
-            System.out.println(clientes.get(dniT).getNombre()+clientes.get(dniT).getTelefono());
+            System.out.println(clientes.get(dniT).getNombre() + clientes.get(dniT).getTelefono());
             break;
           }
           case 2: {
@@ -180,18 +187,17 @@ public class Tienda {
               System.out.println("\nINTRODUZCA NUEVO EMAIL:");
               emailT = sc.next();
             } while (!emailT.matches(
-              "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"));
+                "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"));
             clientes.get(dniT).setEmail(emailT);
             System.out.println("\nSE HA MODIFICADO EL EMAIL, EL NUEVO EMAIL PARA EL CONTACTO ES:");
-            System.out.println(clientes.get(dniT).getNombre()+clientes.get(dniT).getEmail());
-            break;            
+            System.out.println(clientes.get(dniT).getNombre() + clientes.get(dniT).getEmail());
+            break;
           }
-          
+
         }
       } while (opcion != 9);
-    }else
-    {
-    System.out.println("NO EXISTE NINGUN CLIENTE CON ESE DNI.");
+    } else {
+      System.out.println("NO EXISTE NINGUN CLIENTE CON ESE DNI.");
     }
 
   }
@@ -219,10 +225,11 @@ public class Tienda {
       System.out.println("NO EXISTE NINGUN CLIENTE CON ESE DNI.");
     }
   }
- 
+
   // SUBMENU ARTICULOS
 
   public void menuArticulos() {
+    String opcionStr;
     int opcion = 0;
     do {
       System.out.println("\n\n\n\n\n\t\t\t\tARTICULOS\n");
@@ -231,24 +238,30 @@ public class Tienda {
       System.out.println("\t\t\t\t3 - REPOSICIÓN");
       System.out.println("\t\t\t\t4 - LISTADOS");
       System.out.println("\t\t\t\t9 - SALIR");
-      opcion = sc.nextInt();
-      switch (opcion) {
-        case 1: {
-          altaArticulos();
-          break;
+      opcionStr = sc.next();
+      if (opcionStr.matches("^[1-4]|9$")) {
+        opcion = Integer.parseInt(opcionStr);
+        switch (opcion) {
+          case 1: {
+            altaArticulos();
+            break;
+          }
+          case 2: {
+            bajaArticulos();
+            break;
+          }
+          case 3: {
+            reposicionArticulos();
+            break;
+          }
+          case 4: {
+            listarArticulos();
+            break;
+          }
         }
-        case 2: {
-          bajaArticulos();
-          break;
-        }
-        case 3: {
-          reposicionArticulos();
-          break;
-        }
-        case 4: {
-          listarArticulos();
-          break;
-        }
+      } else {
+        System.out
+            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
       }
     } while (opcion != 9);
   }
@@ -396,157 +409,139 @@ public class Tienda {
   // SUBMENU PEDIDOS
 
   public void menuPedidos() {
+    String opcionStr;
     int opcion = 0;
     do {
       System.out.println("\n\n\n\n\n\t\t\t\tMENU PEDIDOS\n");
-      System.out.println("\t\t\t\t1 - NUEVO PEDIDO");      
+      System.out.println("\t\t\t\t1 - NUEVO PEDIDO");
       System.out.println("\t\t\t\t2 - LISTADOS");
       System.out.println("\t\t\t\t3 - TOTAL PEDIDO");
       System.out.println("\n\t\t\t\t9 - SALIR");
-      opcion = sc.nextInt();
-      switch (opcion) {
-        case 1: {
-          nuevoPedido();
-          break;
+      opcionStr = sc.next();
+      if (opcionStr.matches("^[1-3]|9$")) {
+        opcion = Integer.parseInt(opcionStr);
+        switch (opcion) {
+          case 1: {
+            nuevoPedido();
+            break;
+          }
+          case 2: {
+            listarPedidos();
+            break;
+          }
+          case 3: {
+            totalPedido();
+            break;
+          }
         }
-        case 2: {
-          listarPedidos();
-          break;
-        }
-        case 3: {
-          totalPedido();
-          break;
-        }
+      } else {
+        System.out
+            .println("\n\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 3, O UN 9 PARA SALIR.");
       }
     } while (opcion != 9);
   }
 
-  public void listarPedidos(){
+  public void listarPedidos() {
     String opcion;
     sc.nextLine();
     do {
       System.out.println("\n\n\n\n\n\t\t\t\tLISTAR PEDIDOS\n");
       System.out.println("\t\t\t\t1 - TODOS LOS PEDIDOS ORDENADOS POR IMPORTE TOTAL SIN DESGLOSAR");
       System.out.println("\t\t\t\t2 - PEDIDOS ORDENADOS POR FECHA DESGLOSADOS");
-      System.out.println("\t\t\t\t3 - PEDIDOS QUE SUPERAN UN IMPORTE");      
+      System.out.println("\t\t\t\t3 - PEDIDOS QUE SUPERAN UN IMPORTE");
       System.out.println("\n\t\t\t\t4 - SALIR");
-      do{
+      do {
         System.out.println("\n\t\t\t\tSELECCIONA TU OPCION:");
-        opcion = sc.nextLine();        
-      }while (!opcion.matches("[1-4]"));
+        opcion = sc.nextLine();
+      } while (!opcion.matches("[1-4]"));
       if (!opcion.equals("4")) {
         listadosPedidos(opcion);
       }
-    } while (!opcion.equals("4"));    
+    } while (!opcion.equals("4"));
   }
 
-  public void listadosPedidos(String opcion){
-    for(Pedido p: pedidos){
-      totales.put(p.getIdPedido(),totalPedido(p));        
-    }       
+  public void listadosPedidos(String opcion) {
+    for (Pedido p : pedidos) {
+      totales.put(p.getIdPedido(), totalPedido(p));
+    }
 
-    if(opcion.equals("1")){      
+    if (opcion.equals("1")) {
       System.out.println("\nPEDIDOS ORDENADOS DE MENOR A MAYOR IMPORTE TOTAL:\n");
       pedidos.stream()
-      .sorted((p1, p2) -> Double.compare(totales.get(p1.getIdPedido()), totales.get(p2.getIdPedido())))
-      .forEach(p -> {          
-          System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni() 
-          + " - " + p.getClientePedido().getNombre() + " - " + String.format("%.2f",totales.get(p.getIdPedido())));
-      });      
-    }if (opcion.equals("2")){
+          .sorted((p1, p2) -> Double.compare(totales.get(p1.getIdPedido()), totales.get(p2.getIdPedido())))
+          .forEach(p -> {
+            System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni()
+                + " - " + p.getClientePedido().getNombre() + " - "
+                + String.format("%.2f", totales.get(p.getIdPedido())));
+          });
+    }
+    if (opcion.equals("2")) {
       System.out.println("\nPEDIDOS ORDENADOS POR FECHA DESGLOSADOS:");
-      pedidos.stream().sorted(Comparator.comparing(Pedido::getFechaPedido)).forEach(p ->{
-        System.out.println("\nPEDIDO: "+p.getIdPedido()+ " - " +p.getClientePedido().getDni()+" - "+p.getClientePedido().getNombre()+" - "+p.getFechaPedido());
+      pedidos.stream().sorted(Comparator.comparing(Pedido::getFechaPedido)).forEach(p -> {
+        System.out.println("\nPEDIDO: " + p.getIdPedido() + " - " + p.getClientePedido().getDni() + " - "
+            + p.getClientePedido().getNombre() + " - " + p.getFechaPedido());
         System.out.println("ARTICULOS:");
-        for (LineaPedido lp: p.getCestaCompra()){
-          System.out.println(articulos.get(lp.getIdArticulo()).getDescripcion()+" - "+lp.getUnidades()+" UNIDADES");
+        for (LineaPedido lp : p.getCestaCompra()) {
+          System.out
+              .println(articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
         }
-        System.out.println("TOTAL: "+String.format("%.2f",totales.get(p.getIdPedido())));        
-      });
-      
-    }if(opcion.equals("3")){
-      String importe;
-      System.out.println("\nPEDIDOS QUE SUPERAN UN IMPORTE DETERMINADO");
-      do{
-        System.out.println("\nPOR FAVOR INTRODUZCA EL IMPORTE:");
-      importe=sc.nextLine();
-      }while(!esDouble(importe));
-      double importeD=Double.parseDouble(importe);
-      System.out.println("\nPEDIDOS SUPERIORES A "+importe+":");
-      pedidos.stream()
-      .filter(p -> totales.get(p.getIdPedido()) > importeD)
-      .sorted(Comparator.comparingDouble(p -> totales.get(p.getIdPedido())))
-      .forEach(p -> {          
-        System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni() 
-        + " - " + p.getClientePedido().getNombre() + " - " + String.format("%.2f",totales.get(p.getIdPedido())));
+        System.out.println("TOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())));
       });
 
     }
-    
-    
+    if (opcion.equals("3")) {
+      String importe;
+      System.out.println("\nPEDIDOS QUE SUPERAN UN IMPORTE DETERMINADO");
+      do {
+        System.out.println("\nPOR FAVOR INTRODUZCA EL IMPORTE:");
+        importe = sc.nextLine();
+      } while (!esDouble(importe));
+      double importeD = Double.parseDouble(importe);
+      System.out.println("\nPEDIDOS SUPERIORES A " + importe + ":");
+      pedidos.stream()
+          .filter(p -> totales.get(p.getIdPedido()) > importeD)
+          .sorted(Comparator.comparingDouble(p -> totales.get(p.getIdPedido())))
+          .forEach(p -> {
+            System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni()
+                + " - " + p.getClientePedido().getNombre() + " - "
+                + String.format("%.2f", totales.get(p.getIdPedido())));
+          });
+
+    }
+
   }
 
-   public double totalPedido(Pedido p){
-    double total=0;    
-    for (LineaPedido lp : p.getCestaCompra()){      
-      total+=articulos.get(lp.getIdArticulo()).getPvp()*(lp.getUnidades()); 
+  public double totalPedido(Pedido p) {
+    double total = 0;
+    for (LineaPedido lp : p.getCestaCompra()) {
+      total += articulos.get(lp.getIdArticulo()).getPvp() * (lp.getUnidades());
     }
     return total;
   }
 
-  /*
-   * Se sustituyó por nuevoPedido()
-   * 
-   * public void altaPedido() {
-   * 
-   * ArrayList<LineaPedido> pedidoAux = new ArrayList();
-   * LocalDate hoy;
-   * 
-   * System.out.println("INTRODUCE EL DNI CLIENTE PARA EL PEDIDO: ");
-   * String dni = sc.next();
-   * 
-   * System.out.println("SE VAN A INTRODUCIR LOS ARTÍCULOS 1 A 1: ");
-   * System.out.println("INTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
-   * String id = sc.next();
-   * while (!id.equals("99")) {
-   * System.out.println("CUANTAS UNIDADES QUIERES ?:");
-   * int unidades = sc.nextInt();
-   * pedidoAux.add(new LineaPedido(id, unidades));
-   * articulos.get(buscarId(id)).setExistencias(articulos.get(buscarId(id)).
-   * getExistencias() - unidades);
-   * System.out.println("INTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
-   * id = sc.next();
-   * }
-   * hoy = LocalDate.now();
-   * //
-   * // LLAMADA AL MÉTODO generaIdPedido() - ALTA DEL NUEVO PEDIDO EN EL ARRAYLIST
-   * //
-   * pedidos.add(new Pedido(generaIdPedido(dni), clientes.get(buscarDni(dni)),
-   * hoy, pedidoAux));
-   * }
-   */
-
   public void totalPedido() {
     String id;
     sc.nextLine();
-    for(Pedido p: pedidos){
-      System.out.println(p.getIdPedido()+p.getClientePedido().getNombre());
-      totales.put(p.getIdPedido(),totalPedido(p));              
-    }    
-    do{System.out.println("\nINTRODUCE EL ID DEL PEDIDO PARA CALCULAR TOTAL: ");
-    id = sc.nextLine();    
-    }while (!totales.containsKey(id));
+    for (Pedido p : pedidos) {
+      System.out.println(p.getIdPedido() + p.getClientePedido().getNombre());
+      totales.put(p.getIdPedido(), totalPedido(p));
+    }
+    do {
+      System.out.println("\nINTRODUCE EL ID DEL PEDIDO PARA CALCULAR TOTAL: ");
+      id = sc.nextLine();
+    } while (!totales.containsKey(id));
 
-    System.out.println("\nLISTADO DE ARTICULOS PEDIDO "+ id + ":\n");
+    System.out.println("\nLISTADO DE ARTICULOS PEDIDO " + id + ":\n");
     for (Pedido p : pedidos) {
       if (p.getIdPedido().equals(id)) {
-          for (LineaPedido lp : p.getCestaCompra()) {
-              System.out.println(articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
-          }
+        for (LineaPedido lp : p.getCestaCompra()) {
+          System.out
+              .println(articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
+        }
       }
-  }
-    
-    System.out.println("\nEL TOTAL DEL PEDIDO " +id+ " ES: " + totales.get(id) + " Euros");
+    }
+
+    System.out.println("\nEL TOTAL DEL PEDIDO " + id + " ES: " + totales.get(id) + " Euros");
   }
 
   public void nuevoPedido() {
@@ -628,21 +623,6 @@ public class Tienda {
     nuevoId = dni + "-" + String.format("%03d", contador) + "/" + LocalDate.now().getYear();
     return nuevoId;
   }
-
-  /*public int buscarId(String id) {
-    int posicion = -1;
-    int i = 0;
-    for (Articulo a : articulos) {
-      if (a.getIdArticulo().equals(id)) {
-        posicion = i;
-        break;
-      }
-      i++;
-    }
-    return posicion;
-  } */
-
-
   // FALTA SUBMENU BACKUP
 
   // METODO AUXILIAR VALIDAR SI UN STRING ES UN ENTERO
@@ -668,31 +648,6 @@ public class Tienda {
       return false;
     }
   }
-
-  // DEPRECATED METODO AUXILIAR PARA VALIDAR UN DNI
-
-  /*public static boolean validarDNI(String dni) {
-    // VERIFICAMOS EL FORMATO CON REGEX
-    if (dni == null || !dni.matches("\\d{8}[A-HJ-NP-TV-Z]")) {
-      return false;
-    }
-
-    // COMPROBACION DE LETRA CORRECTA
-
-    String numeroStr = dni.substring(0, 8);
-    char letra = dni.charAt(8);
-
-    char letraCalculada = calcularLetraDNI(Integer.parseInt(numeroStr));
-
-    return letra == letraCalculada;
-  }
-
-  // METODO AUXILIAR CALCULAR LA LETRA DEL DNI
-
-  private static char calcularLetraDNI(int numero) {
-    String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-    return letras.charAt(numero % 23);
-  }*/
 
   // METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA
   public void cargaDatos() {
