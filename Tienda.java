@@ -37,7 +37,7 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    //t.leerArchivos();
+    // t.leerArchivos();
     t.cargaDatos();
     t.menu();
   }
@@ -47,13 +47,18 @@ public class Tienda {
   public void menu() {
     String opcionStr;
     int opcion = 0;
-    do {      
-      System.out.println("\n\n\n\n\n\t\t\t\tMENU DE OPCIONES\n");
-      System.out.println("\t\t\t\t1 - ARTICULOS");
-      System.out.println("\t\t\t\t2 - CLIENTES");
-      System.out.println("\t\t\t\t3 - PEDIDOS");
-      System.out.println("\t\t\t\t4 - COPIA DE SEGURIDAD");
-      System.out.println("\n\t\t\t\t9 - SALIR");
+    do {
+      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*   GESTION DE TIENDA     *");
+      System.out.println("\t\t\t\t*   MENU DE OPCIONES      *");
+      System.out.println("\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*  1 - ARTICULOS          *");
+      System.out.println("\t\t\t\t*  2 - CLIENTES           *");
+      System.out.println("\t\t\t\t*  3 - PEDIDOS            *");
+      System.out.println("\t\t\t\t*  4 - COPIA DE SEGURIDAD *");
+      System.out.println("\t\t\t\t*                         *");
+      System.out.println("\t\t\t\t*  9 - SALIR              *");
+      System.out.println("\t\t\t\t***************************");
       opcionStr = sc.next();
       if (opcionStr.matches("^[1-4]|9$")) {
         opcion = Integer.parseInt(opcionStr);
@@ -88,13 +93,17 @@ public class Tienda {
   public void menuArticulos() {
     String opcionStr;
     int opcion = 0;
-    do {      
-      System.out.println("\n\n\n\n\n\t\t\t\tARTICULOS\n");
-      System.out.println("\t\t\t\t1 - ALTA");
-      System.out.println("\t\t\t\t2 - BAJA");
-      System.out.println("\t\t\t\t3 - REPOSICIÓN");
-      System.out.println("\t\t\t\t4 - LISTADOS");
-      System.out.println("\t\t\t\t9 - SALIR");
+    do {
+      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*         ARTICULOS       *");
+      System.out.println("\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*  1 - ALTA               *");
+      System.out.println("\t\t\t\t*  2 - BAJA               *");
+      System.out.println("\t\t\t\t*  3 - REPOSICIÓN         *");
+      System.out.println("\t\t\t\t*  4 - LISTADOS           *");
+      System.out.println("\t\t\t\t*                         *");
+      System.out.println("\t\t\t\t*  9 - SALIR              *");
+      System.out.println("\t\t\t\t***************************");
       opcionStr = sc.next();
       if (opcionStr.matches("^[1-4]|9$")) {
         opcion = Integer.parseInt(opcionStr);
@@ -213,15 +222,19 @@ public class Tienda {
 
   public void listarArticulos() {
     String opcion;
-    do {      
-      System.out.println("\n\n\n\n\n\t\t\t\tLISTAR ARTICULOS\n");
-      System.out.println("\t\t\t\t0 - TODOS LOS ARTICULOS");
-      System.out.println("\t\t\t\t1 - PERIFERICOS");
-      System.out.println("\t\t\t\t2 - ALMACENAMIENTO");
-      System.out.println("\t\t\t\t3 - IMPRESORAS");
-      System.out.println("\t\t\t\t4 - MONITORES");
-      System.out.println("\t\t\t\t5 - COMPONENETES");
-      System.out.println("\t\t\t\t6 - SALIR");
+    do {
+      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*   LISTAR ARTICULOS      *");
+      System.out.println("\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*  0 - TODOS LOS ARTICULOS*");
+      System.out.println("\t\t\t\t*  1 - PERIFERICOS        *");
+      System.out.println("\t\t\t\t*  2 - ALMACENAMIENTO     *");
+      System.out.println("\t\t\t\t*  3 - IMPRESORAS         *");
+      System.out.println("\t\t\t\t*  4 - MONITORES          *");
+      System.out.println("\t\t\t\t*  5 - COMPONENETES       *");
+      System.out.println("\t\t\t\t*                         *");
+      System.out.println("\t\t\t\t*  6 - SALIR              *");
+      System.out.println("\t\t\t\t***************************");
       do
         opcion = sc.next();
       while (!opcion.matches("[0-6]"));
@@ -247,7 +260,8 @@ public class Tienda {
         articulos.values().stream().sorted(new ComparaArticuloPorPrecio().reversed()).forEach(System.out::println);
       }
     } else {
-      System.out.println("\n\t\t\tLISTADO DE LOS ARTICULOS DE LA SECCION (" + secciones[Integer.parseInt(seccion)] + ")");
+      System.out
+          .println("\n\t\t\tLISTADO DE LOS ARTICULOS DE LA SECCION (" + secciones[Integer.parseInt(seccion)] + ")");
       if (opcion.isBlank()) {
         articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion)).sorted()
             .forEach(System.out::println);
@@ -268,13 +282,18 @@ public class Tienda {
   public void menuClientes() {
     String opcionStr;
     int opcion = 0;
-    do {      
-      System.out.println("\n\n\n\n\n\t\t\t\tMENU CLIENTES\n");
-      System.out.println("\t\t\t\t1 - AÑADIR CLIENTE");
-      System.out.println("\t\t\t\t2 - LISTAR CLIENTES");
-      System.out.println("\t\t\t\t3 - MODIFICAR DATOS CONTACTO");
-      System.out.println("\t\t\t\t4 - ELIMINAR CLIENTE");
-      System.out.println("\n\t\t\t\t9 - SALIR");
+    do {
+      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*      MENU CLIENTES      *");
+      System.out.println("\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*  1 - AÑADIR CLIENTE     *");
+      System.out.println("\t\t\t\t*  2 - LISTAR CLIENTES    *");
+      System.out.println("\t\t\t\t*  3 - MODIFICAR DATOS    *");
+      System.out.println("\t\t\t\t*      DE CONTACTO        *");
+      System.out.println("\t\t\t\t*  4 - ELIMINAR CLIENTE   *");
+      System.out.println("\t\t\t\t*                         *");
+      System.out.println("\t\t\t\t*  9 - SALIR              *");
+      System.out.println("\t\t\t\t***************************");
       opcionStr = sc.next();
       if (opcionStr.matches("^[1-4]|9$")) {
         opcion = Integer.parseInt(opcionStr);
@@ -411,13 +430,17 @@ public class Tienda {
   public void menuPedidos() {
     String opcionStr;
     int opcion = 0;
-    do {      
-      System.out.println("\n\n\n\n\n\t\t\t\tMENU PEDIDOS\n");
-      System.out.println("\t\t\t\t1 - NUEVO PEDIDO");
-      System.out.println("\t\t\t\t2 - LISTADOS");
-      System.out.println("\t\t\t\t3 - TOTAL PEDIDO");
-      System.out.println("\t\t\t\t4 - ELIMINAR PEDIDO");
-      System.out.println("\n\t\t\t\t9 - SALIR");
+    do {
+      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*       MENU PEDIDOS      *");
+      System.out.println("\t\t\t\t***************************");
+      System.out.println("\t\t\t\t*  1 - NUEVO PEDIDO       *");
+      System.out.println("\t\t\t\t*  2 - LISTADOS           *");
+      System.out.println("\t\t\t\t*  3 - TOTAL PEDIDO       *");
+      System.out.println("\t\t\t\t*  4 - ELIMINAR PEDIDO    *");
+      System.out.println("\t\t\t\t*                         *");
+      System.out.println("\t\t\t\t*  9 - SALIR              *");
+      System.out.println("\t\t\t\t***************************");
       opcionStr = sc.next();
       if (opcionStr.matches("^[1-4]|9$")) {
         opcion = Integer.parseInt(opcionStr);
@@ -449,7 +472,7 @@ public class Tienda {
   public void listarPedidos() {
     String opcion;
     sc.nextLine();
-    do {      
+    do {
       System.out.println("\n\n\n\n\n\t\t\t\tLISTAR PEDIDOS\n");
       System.out.println("\t\t\t\t1 - TODOS LOS PEDIDOS ORDENADOS POR IMPORTE TOTAL SIN DESGLOSAR");
       System.out.println("\t\t\t\t2 - PEDIDOS ORDENADOS POR FECHA DESGLOSADOS");
@@ -694,7 +717,7 @@ public class Tienda {
         new ArrayList<>(List.of(new LineaPedido("4-11", 14), new LineaPedido("4-22", 4), new LineaPedido("4-33", 4)))));
     pedidos.add(new Pedido("33333333F-001/2024", clientes.get("33333333F"), hoy.minusDays(3),
         new ArrayList<>(List.of(new LineaPedido("3-22", 3), new LineaPedido("2-22", 3)))));
-    pedidos.add(new Pedido("33333333f-002/2024", clientes.get("33333333F"), hoy.minusDays(5),
+    pedidos.add(new Pedido("33333333F-002/2024", clientes.get("33333333F"), hoy.minusDays(5),
         new ArrayList<>(List.of(new LineaPedido("4-33", 3), new LineaPedido("2-11", 3)))));
     pedidos.add(new Pedido("22222222H-001/2024", clientes.get("22222222H"), hoy.minusDays(4),
         new ArrayList<>(List.of(new LineaPedido("2-11", 2), new LineaPedido("2-33", 2), new LineaPedido("4-33", 2)))));
@@ -756,7 +779,9 @@ public class Tienda {
       System.out.println("DATOS IMPORTADOS CON EXITO.");
 
     } catch (FileNotFoundException e) {
-      System.out.println("\n\n\n\t\t\tERROR AL CARGAR LOS DATOS DE LOS ARCHIVOS DE BACKUP. NO EXISTEN UNO O VARIOS ARCHIVOS.\n\t\t\t"+e.toString());
+      System.out.println(
+          "\n\n\n\t\t\tERROR AL CARGAR LOS DATOS DE LOS ARCHIVOS DE BACKUP. NO EXISTEN UNO O VARIOS ARCHIVOS.\n\t\t\t"
+              + e.toString());
     } catch (EOFException e) {
 
     } catch (ClassNotFoundException | IOException e) {
@@ -790,6 +815,4 @@ public class Tienda {
     }
   }
 
- 
 }
-
