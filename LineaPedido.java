@@ -1,7 +1,6 @@
 import java.io.Serializable;
 
-
-public class LineaPedido implements Serializable{
+public class LineaPedido implements Serializable {
   private String idArticulo;
   private int unidades;
 
@@ -30,9 +29,5 @@ public class LineaPedido implements Serializable{
   public String toString() {
     return "LineaPedido [idArticulo=" + idArticulo + ", unidades=" + unidades + "]";
   }
-
- 
-
-
 
 }

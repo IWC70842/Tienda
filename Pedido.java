@@ -2,14 +2,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-
-public class Pedido implements Serializable{
+public class Pedido implements Serializable {
 
   private String idPedido;
   private Cliente clientePedido;
   private LocalDate fechaPedido;
-  private ArrayList <LineaPedido> cestaCompra;
-  
+  private ArrayList<LineaPedido> cestaCompra;
+
   public Pedido(String idPedido, Cliente clientePedido, LocalDate fechaPedido, ArrayList<LineaPedido> cestaCompra) {
     this.idPedido = idPedido;
     this.clientePedido = clientePedido;
@@ -49,16 +48,10 @@ public class Pedido implements Serializable{
     this.cestaCompra = cestaCompra;
   }
 
-  
+  @Override
+  public String toString() {
+    return "Pedido [idPedido=" + idPedido + ", clientePedido=" + clientePedido + ", fechaPedido=" + fechaPedido
+        + ", cestaCompra=" + cestaCompra + "]";
+  }
 
- 
-
-  
-
-  
-  
-  
-
-
-  
 }

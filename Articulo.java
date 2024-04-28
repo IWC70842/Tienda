@@ -1,11 +1,11 @@
 import java.io.Serializable;
 
-public class Articulo implements Serializable, Comparable<Articulo>{
+public class Articulo implements Serializable, Comparable<Articulo> {
   private String idArticulo;
   private String descripcion;
   private int existencias;
   private double pvp;
-  
+
   public Articulo(String idArticulo, String descripcion, int existencias, double pvp) {
     this.idArticulo = idArticulo;
     this.descripcion = descripcion;
@@ -47,7 +47,8 @@ public class Articulo implements Serializable, Comparable<Articulo>{
 
   @Override
   public String toString() {
-    return "\t\t\tID: "+idArticulo + " - DESCRIPCION: "  + descripcion + " - UNIDADES DISPONIBLES: " + existencias + " - PRECIO: " + pvp;
+    return "\t\t\tID: " + idArticulo + " - DESCRIPCION: " + descripcion + " - UNIDADES DISPONIBLES: " + existencias
+        + " - PRECIO: " + pvp;
   }
 
   @Override
@@ -55,7 +56,4 @@ public class Articulo implements Serializable, Comparable<Articulo>{
     return this.idArticulo.compareTo(a.idArticulo);
   }
 
-
-  
-  
 }

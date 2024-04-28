@@ -37,7 +37,7 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    // t.leerArchivos();
+    //t.leerArchivos();
     t.cargaDatos();
     t.menu();
   }
@@ -132,6 +132,8 @@ public class Tienda {
     } while (opcion != 9);
   }
 
+  // METODO PARA DAR DE ALTA UN ARTICULO NUEVO
+
   public void altaArticulos() {
     String idT, descT, exT, pvpT;
     sc.nextLine();
@@ -167,6 +169,8 @@ public class Tienda {
     articulos.put(idT, new Articulo(idT, descT, Integer.parseInt(exT), Double.parseDouble(pvpT)));
   }
 
+  // METODO PARA ELIMINAR UN ARTICULO
+
   public void bajaArticulos() {
     String idT;
 
@@ -185,12 +189,14 @@ public class Tienda {
     }
   }
 
+  // METODO REPONER ARTICULOS 
+
   public void reposicionArticulos() {
     String stockMinimo, idT, stockMas;
     sc.nextLine();
     do {
       System.out.println("\n\t\t\tNUMERO DE UNIDADES PARA RUPTURA DE STOCK:");
-      stockMinimo = sc.nextLine(); // Se lee la entrada de EXISTENCIAS como un String
+      stockMinimo = sc.nextLine();
     } while (!esInt(stockMinimo) && stockMinimo.length() > 0);
     if (stockMinimo.length() == 0)
       return;
@@ -211,14 +217,14 @@ public class Tienda {
 
     do {
       System.out.println("\n\t\t\tNUMERO DE UNIDADES A REPONER:");
-      stockMas = sc.nextLine(); // Se lee la entrada de EXISTENCIAS como un String
+      stockMas = sc.nextLine(); 
     } while (!esInt(stockMas) && stockMas.length() > 0);
     if (stockMas.length() == 0)
       return;
     articulos.get(idT).setExistencias(articulos.get(idT).getExistencias() + Integer.parseInt(stockMas));
   }
 
-  // LISTADOS ARTICULOS
+  // SUBMENU LISTADOS ARTICULOS
 
   public void listarArticulos() {
     String opcion;
@@ -244,6 +250,8 @@ public class Tienda {
     } while (!opcion.equals("6"));
 
   }
+
+  // METODO LISTADOS 
 
   public void listados(String seccion) {
 
@@ -317,12 +325,14 @@ public class Tienda {
     } while (opcion != 9);
   }
 
+  // METODO PARA DAR DE ALTA UN NUEVO CLIENTE
+
   public void nuevoCliente() {
     String dniT, nombreT, telT, emailT;
     sc.nextLine();
     System.out.println("ALTA NUEVO CLIENTE");
 
-    // VALIDACION DNI
+    // VALIDACION DNI CON REGEX
     do {
       System.out.println("INTRODUZCA DNI CLIENTE:");
       dniT = sc.nextLine().toUpperCase();
@@ -349,9 +359,13 @@ public class Tienda {
     clientes.put(dniT, new Cliente(dniT, nombreT, telT, emailT));
   }
 
+  // METODO PARA LISTAR TODOS LOS CLIENTES EXISTENTES ORDENADOS POR NOMBRE (COMPARABLE)
+
   public void listaClientes() {
     clientes.values().stream().sorted().forEach(System.out::println);
   }
+
+  // METODO PARA MODIFICAR LOS DATOS DE CONTACTO DE UN CLIENTE
 
   public void modificaCliente() {
     String dniT, telefonoT, emailT;
@@ -400,6 +414,8 @@ public class Tienda {
     }
 
   }
+
+  // METODO PARA DAR DE BAJA UN CLIENTE
 
   public void bajaClientes() {
     String dniT;
@@ -468,6 +484,8 @@ public class Tienda {
       }
     } while (opcion != 9);
   }
+
+  // METODO PARA REALIZAR LISTADOS DE PEDIDOS SEGÚN ELECCION
 
   public void listarPedidos() {
     String opcion;
@@ -539,6 +557,8 @@ public class Tienda {
 
   }
 
+  // METODO PARA CALCULAR EL TOTAL DE UN PEDIDO PASADO COMO PARAMETRO
+
   public double totalPedido(Pedido p) {
     double total = 0;
     for (LineaPedido lp : p.getCestaCompra()) {
@@ -546,6 +566,8 @@ public class Tienda {
     }
     return total;
   }
+
+  // METODO PARA CALCULAR EL TOTAL DE UN PEDIDO SOLICITANDO LOS DATOS DEL MISMO POR TECLADO
 
   public void totalPedido() {
     String id;
@@ -571,6 +593,8 @@ public class Tienda {
 
     System.out.println("\nEL TOTAL DEL PEDIDO " + id + " ES: " + totales.get(id) + " Euros");
   }
+
+  // METODO PARA CREAR UN NUEVO PEDIDO
 
   public void nuevoPedido() {
     // ARRAYLIST AUXILIAR PARA CREAR EL PEDIDO
@@ -637,16 +661,19 @@ public class Tienda {
     }
   }
 
+  // METODO PARA ELIMINAR UN PEDIDO 
+
   public void eliminarPedido() {
     String id;
     sc.nextLine();
+    System.out.println("PEDIDOS ACTUALES EN EL SISTEMA:\n ");
     for (Pedido p : pedidos) {
-      System.out.println(p.getIdPedido() + p.getClientePedido().getNombre());
+      System.out.println(p.getIdPedido() +" "+ p.getClientePedido().getNombre());
       totales.put(p.getIdPedido(), totalPedido(p));
     }
     do {
       System.out.println("\nINTRODUCE EL ID DEL PEDIDO A ELIMINAR: ");
-      id = sc.next();
+      id = sc.next().toUpperCase();
     } while (!totales.containsKey(id));
     String pedidoid = id;// DECLARO LA VARIABLE PERIODO ID PORQUE DEBE SER UNA FINAL O NO MODIFICADA PARA
                          // PODER USARLA EN LA LAMBDA
@@ -692,7 +719,8 @@ public class Tienda {
     }
   }
 
-  // METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA
+  // METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA O EN LA PRIMERA EJECUCION
+
   public void cargaDatos() {
     clientes.put("11111111R", new Cliente("11111111R", "ANA", "658111111", "ana@gmail.com"));
     clientes.put("22222222H", new Cliente("22222222H", "LOLA", "649222222", "lola@gmail.com"));
@@ -738,6 +766,8 @@ public class Tienda {
 
   // METODOS DE BACKUP Y CARGA DE DATOS (PERSISTENCIA)
 
+  // METODO PARA REALIZAR LA COPIA DE DATOS A ARCHIVOS .DAT
+
   public void backup() {
     try (
         ObjectOutputStream oosArticulos = new ObjectOutputStream(new FileOutputStream("articulos.dat"));
@@ -752,7 +782,17 @@ public class Tienda {
         oosPedidos.writeObject(p);
       }
 
-      System.out.println("COPIA DE SEGURIDAD REALIZADA CON EXITO.");
+      System.out.println("\t\t\t\t***********************");
+      System.out.println("\t\t\t\t*   |      |  |  |    *");
+      System.out.println("\t\t\t\t*   |      |__|  |    *");
+      System.out.println("\t\t\t\t*   |____________|    *");
+      System.out.println("\t\t\t\t*   _______________   *");
+      System.out.println("\t\t\t\t*  |               |  *");
+      System.out.println("\t\t\t\t*  |    TIENDA     |  *");
+      System.out.println("\t\t\t\t*  |    BACKUP     |  *");
+      System.out.println("\t\t\t\t*  |               |  *");
+      System.out.println("\t\t\t\t***********************");
+      System.out.println("\n\t\t\tCOPIA DE SEGURIDAD REALIZADA CON EXITO.");
 
     } catch (FileNotFoundException e) {
       System.out.println(e.toString());
@@ -761,6 +801,8 @@ public class Tienda {
     }
 
   }
+
+  // METODO PARA CARGAR ELEMENTOS DESDE LOS ARCHIVOS .DAT
 
   public void leerArchivos() {
     try (ObjectInputStream oisArticulos = new ObjectInputStream(new FileInputStream("articulos.dat"));
@@ -776,7 +818,7 @@ public class Tienda {
       while ((p = (Pedido) oisPedidos.readObject()) != null) {
         pedidos.add(p);
       }
-      System.out.println("DATOS IMPORTADOS CON EXITO.");
+      System.out.println("\n\t\t\tDATOS IMPORTADOS CON EXITO.");
 
     } catch (FileNotFoundException e) {
       System.out.println(
@@ -806,7 +848,7 @@ public class Tienda {
         for (Cliente c : clientes.values()) {
           bfwClientes.write(c.getDni() + "," + c.getNombre() + "," + c.getTelefono() + "," + c.getEmail());
         }
-        System.out.println("COPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
+        System.out.println("\n\t\t\tCOPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
       } catch (IOException e) {
         System.out.println("ERROR ENTRADA/SALIDA:" + e);
       }
