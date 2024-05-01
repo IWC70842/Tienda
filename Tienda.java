@@ -37,7 +37,7 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    //t.leerArchivos();
+    // t.leerArchivos();
     t.cargaDatos();
     t.menu();
   }
@@ -189,13 +189,13 @@ public class Tienda {
     }
   }
 
-  // METODO REPONER ARTICULOS 
+  // METODO REPONER ARTICULOS
 
   public void reposicionArticulos() {
     String stockMinimo, idT, stockMas;
     sc.nextLine();
     do {
-      System.out.println("\n\t\t\tNUMERO DE UNIDADES PARA RUPTURA DE STOCK:");
+      System.out.println("\n\t\t\tINTRODUCE EL NUMERO DE UNIDADES PARA RUPTURA DE STOCK:");//PEDIMOS EL NUMERO DE UNIDADES QUE CONSIDERAMOS ROTURA DE STOCK
       stockMinimo = sc.nextLine();
     } while (!esInt(stockMinimo) && stockMinimo.length() > 0);
     if (stockMinimo.length() == 0)
@@ -203,25 +203,30 @@ public class Tienda {
 
     System.out.println("\n\t\t\tLISTADO DE ARTICULOS CON " + Integer.parseInt(stockMinimo) + " UNIDADES O MENOS");
     for (Articulo a : articulos.values()) {
-      if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {
+      if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {//MOSTRAMOS LAS UNIDADES CON ESE NUMERO MINIMO O MENOS
         System.out.println(a);
       }
     }
 
     do {
-      System.out.println("\n\t\t\tIdArticulo a REPONER (IDENTIFICADOR):");
+      System.out.println("\n\t\t\tINTRODUCE EL IdArticulo a REPONER (IDENTIFICADOR) O PULSA ENTER PARA SALIR:");//PEDIMOS EL IDARTICULO DEL ARTICULO QUE SE DESEA REPONER
       idT = sc.nextLine();
     } while (!idT.matches("[1-5][-][0-9][0-9]") && idT.length() > 0);
     if (idT.length() == 0)
       return;
-
-    do {
-      System.out.println("\n\t\t\tNUMERO DE UNIDADES A REPONER:");
-      stockMas = sc.nextLine(); 
-    } while (!esInt(stockMas) && stockMas.length() > 0);
-    if (stockMas.length() == 0)
+    if (articulos.containsKey(idT)) {// SI EL ARTICULO EXISTE PREGUNTAMOS LAS UNIDADES A REPONER
+      do {
+        System.out.println("\n\t\t\tINTRODUCE EL NUMERO DE UNIDADES A REPONER O PULSA ENTER PARA SALIR:");
+        stockMas = sc.nextLine();
+      } while (!esInt(stockMas) && stockMas.length() > 0);
+      if (stockMas.length() == 0)
+        return;
+      articulos.get(idT).setExistencias(articulos.get(idT).getExistencias() + Integer.parseInt(stockMas));
+    } else {// SI EL ARTICULO NO EXISTE DAMOS FEEDBACK Y REGRESAMOS AL MENU
+      System.out.println("\n\t\t\tEL idArticulo INTRODUCIDO NO EXISTE");
       return;
-    articulos.get(idT).setExistencias(articulos.get(idT).getExistencias() + Integer.parseInt(stockMas));
+    }
+
   }
 
   // SUBMENU LISTADOS ARTICULOS
@@ -251,7 +256,7 @@ public class Tienda {
 
   }
 
-  // METODO LISTADOS 
+  // METODO LISTADOS
 
   public void listados(String seccion) {
 
@@ -336,7 +341,7 @@ public class Tienda {
     do {
       System.out.println("INTRODUZCA DNI CLIENTE:");
       dniT = sc.nextLine().toUpperCase();
-    } while(!validarDNI(dniT) || (clientes.containsKey(dniT)));
+    } while (!validarDNI(dniT) || (clientes.containsKey(dniT)));
 
     // NOMBRE SIN VALIDACION
     System.out.println("INTRODUZCA NOMBRE:");
@@ -359,7 +364,8 @@ public class Tienda {
     clientes.put(dniT, new Cliente(dniT, nombreT, telT, emailT));
   }
 
-  // METODO PARA LISTAR TODOS LOS CLIENTES EXISTENTES ORDENADOS POR NOMBRE (COMPARABLE)
+  // METODO PARA LISTAR TODOS LOS CLIENTES EXISTENTES ORDENADOS POR NOMBRE
+  // (COMPARABLE)
 
   public void listaClientes() {
     clientes.values().stream().sorted().forEach(System.out::println);
@@ -567,7 +573,8 @@ public class Tienda {
     return total;
   }
 
-  // METODO PARA CALCULAR EL TOTAL DE UN PEDIDO SOLICITANDO LOS DATOS DEL MISMO POR TECLADO
+  // METODO PARA CALCULAR EL TOTAL DE UN PEDIDO SOLICITANDO LOS DATOS DEL MISMO
+  // POR TECLADO
 
   public void totalPedido() {
     String id;
@@ -604,20 +611,20 @@ public class Tienda {
 
     sc.nextLine();
     do {
-      System.out.println("CLIENTE PEDIDO (DNI):");
+      System.out.println("\n\t\t\tCLIENTE PEDIDO (DNI):");
       dniT = sc.nextLine().toUpperCase();
       if (dniT.isBlank())
         break;
     } while (!clientes.containsKey(dniT));
 
     if (!dniT.isBlank()) {
-      System.out.println("INTRODUZCA LOS ARTICULOS DEL PEDIDO UNO A UNO: ");
+      System.out.println("\t\t\tINTRODUZCA LOS ARTICULOS DEL PEDIDO UNO A UNO: ");
       do {
-        System.out.println("INTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
+        System.out.println("\n\t\t\tINTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
         idT = sc.next();
-        if (!idT.equals("99") && articulos.containsKey(idT)) {
-          System.out.print("(" + articulos.get(idT).getDescripcion() + ") - UNIDADES? ");
+        if (!idT.equals("99") && articulos.containsKey(idT)) {         
           do {
+            System.out.print("\t\t\t(" + articulos.get(idT).getDescripcion() + ") - UNIDADES? ");
             pedidasS = sc.next();
           } while (!esInt(pedidasS));
 
@@ -629,12 +636,14 @@ public class Tienda {
           } catch (StockAgotado e) {
             System.out.println(e.getMessage());
           } catch (StockInsuficiente e) {
-            System.out.println(e.getMessage());
+            System.out.println("\t\t\t"+e.getMessage());
             int disponibles = articulos.get(idT).getExistencias();
-            System.out.print("QUIERES LAS " + disponibles + " UNIDADES DISPONIBLES? (S/N) ");
+            System.out.print("\t\t\tQUIERES LAS " + disponibles + " UNIDADES DISPONIBLES? (S/N) ");
             opc = sc.next();
             if (opc.equalsIgnoreCase("S")) {
               CestaCompraAux.add(new LineaPedido(idT, disponibles));
+            }else{
+              System.out.println("\n\t\t\tNO SE HAN AÑADIDO LAS UNIDADES DISPONIBLES DEL ARTICULO AL PEDIDO");
             }
           }
 
@@ -643,9 +652,9 @@ public class Tienda {
 
       // IMPRIMO EL PEDIDO Y SOLICITO ACEPTACION DEFINITIVA DEL MISMO
       for (LineaPedido l : CestaCompraAux) {
-        System.out.println(articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
+        System.out.println("\t\t\t"+articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
       }
-      System.out.println("ESTE ES TU PEDIDO. PROCEDEMOS? (S/N)   ");
+      System.out.println("\t\t\tESTE ES TU PEDIDO. PROCEDEMOS? (S/N)   ");
       opc = sc.next();
       if (opc.equalsIgnoreCase("S")) {
         // ESCRIBO EL PEDIDO DEFINITIVAMENTE Y DESCUENTO LAS EXISTENCIAS PEDIDAS DE CADA
@@ -657,18 +666,20 @@ public class Tienda {
           articulos.get(l.getIdArticulo())
               .setExistencias(articulos.get(l.getIdArticulo()).getExistencias() - l.getUnidades());
         }
+      }else{
+        System.out.println("\t\t\tSE HA CANCELADO EL PEDIDO PORQUE NO HAS ACEPTADO LA CONFIRMACIÓN FINAL.");
       }
     }
   }
 
-  // METODO PARA ELIMINAR UN PEDIDO 
+  // METODO PARA ELIMINAR UN PEDIDO
 
   public void eliminarPedido() {
     String id;
     sc.nextLine();
     System.out.println("PEDIDOS ACTUALES EN EL SISTEMA:\n ");
     for (Pedido p : pedidos) {
-      System.out.println(p.getIdPedido() +" "+ p.getClientePedido().getNombre());
+      System.out.println(p.getIdPedido() + " " + p.getClientePedido().getNombre());
       totales.put(p.getIdPedido(), totalPedido(p));
     }
     do {
@@ -695,6 +706,32 @@ public class Tienda {
     return nuevoId;
   }
 
+  // METODO AUXILIAR PARA VALIDAR SI UN DNI INTRODUCIDO ES VALIDO
+
+  public static boolean validarDNI(String dni) {
+    // Verificar que el DNI tiene un formato válido
+    if (dni.isBlank() || !dni.matches("\\d{8}[A-HJ-NP-TV-Z]")) {
+      return false;
+    }
+
+    // Extraer el número y la letra del DNI
+    String numeroStr = dni.substring(0, 8);
+    char letra = dni.charAt(8);
+
+    // Calcular la letra correspondiente al número del DNI
+    char letraCalculada = calcularLetraDNI(Integer.parseInt(numeroStr));
+
+    // Comparar la letra calculada con la letra proporcionada y devolver
+    // el resultado de la comparación TRUE/FALSE
+
+    return letra == letraCalculada;
+  }
+
+  private static char calcularLetraDNI(int numero) {
+    String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+    return letras.charAt(numero % 23);
+  }
+
   // METODO AUXILIAR VALIDAR SI UN STRING ES UN ENTERO
 
   public boolean esInt(String s) {
@@ -719,7 +756,8 @@ public class Tienda {
     }
   }
 
-  // METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA O EN LA PRIMERA EJECUCION
+  // METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA O EN
+  // LA PRIMERA EJECUCION
 
   public void cargaDatos() {
     clientes.put("11111111R", new Cliente("11111111R", "ANA", "658111111", "ana@gmail.com"));
@@ -729,7 +767,7 @@ public class Tienda {
     articulos.put("1-11", new Articulo("1-11", "RATON LOGITECH", 14, 15));
     articulos.put("1-22", new Articulo("1-22", "TECLADO STANDAR", 9, 18));
     articulos.put("2-11", new Articulo("2-11", "HDD SEAGATE 1TB", 16, 80));
-    articulos.put("2-22", new Articulo("2-22", "SSD KINGSTIM 256GB", 9, 70));
+    articulos.put("2-22", new Articulo("2-22", "SSD KINGSTOM 256GB", 9, 70));
     articulos.put("2-33", new Articulo("2-33", "SSD KINGSTOM 512GB", 15, 120));
     articulos.put("3-11", new Articulo("3-11", "EPSON ET2800", 0, 200));
     articulos.put("3-22", new Articulo("3-22", "EPSON XP200", 5, 80));
@@ -856,31 +894,5 @@ public class Tienda {
       System.out.println("ERROR AL CREAR LA CARPETA: " + e);
     }
   }
-
-  // METODO AUXILIAR PARA VALIDAR SI UN DNI INTRODUCIDO ES VALIDO
-
-  public static boolean validarDNI(String dni) {
-    // Verificar que el DNI tiene un formato válido
-    if (dni.isBlank() || !dni.matches("\\d{8}[A-HJ-NP-TV-Z]")) {
-        return false;
-    }
-
-    // Extraer el número y la letra del DNI
-    String numeroStr = dni.substring(0, 8);
-    char letra = dni.charAt(8);
-
-    // Calcular la letra correspondiente al número del DNI
-    char letraCalculada = calcularLetraDNI(Integer.parseInt(numeroStr));
-
-    // Comparar la letra calculada con la letra proporcionada y devolver
-    // el resultado de la comparación TRUE/FALSE
-                 
-    return letra == letraCalculada;
-}
-
-private static char calcularLetraDNI(int numero) {
-    String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-    return letras.charAt(numero % 23);
-} 
 
 }
