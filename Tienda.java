@@ -195,7 +195,9 @@ public class Tienda {
     String stockMinimo, idT, stockMas;
     sc.nextLine();
     do {
-      System.out.println("\n\t\t\tINTRODUCE EL NUMERO DE UNIDADES PARA RUPTURA DE STOCK:");//PEDIMOS EL NUMERO DE UNIDADES QUE CONSIDERAMOS ROTURA DE STOCK
+      System.out.println("\n\t\t\tINTRODUCE EL NUMERO DE UNIDADES PARA RUPTURA DE STOCK:");// PEDIMOS EL NUMERO DE
+                                                                                           // UNIDADES QUE CONSIDERAMOS
+                                                                                           // ROTURA DE STOCK
       stockMinimo = sc.nextLine();
     } while (!esInt(stockMinimo) && stockMinimo.length() > 0);
     if (stockMinimo.length() == 0)
@@ -203,13 +205,21 @@ public class Tienda {
 
     System.out.println("\n\t\t\tLISTADO DE ARTICULOS CON " + Integer.parseInt(stockMinimo) + " UNIDADES O MENOS");
     for (Articulo a : articulos.values()) {
-      if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {//MOSTRAMOS LAS UNIDADES CON ESE NUMERO MINIMO O MENOS
+      if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {// MOSTRAMOS LAS UNIDADES CON ESE NUMERO MINIMO O MENOS
         System.out.println(a);
       }
     }
 
     do {
-      System.out.println("\n\t\t\tINTRODUCE EL IdArticulo a REPONER (IDENTIFICADOR) O PULSA ENTER PARA SALIR:");//PEDIMOS EL IDARTICULO DEL ARTICULO QUE SE DESEA REPONER
+      System.out.println("\n\t\t\tINTRODUCE EL IdArticulo a REPONER (IDENTIFICADOR) O PULSA ENTER PARA SALIR:");// PEDIMOS
+                                                                                                                // EL
+                                                                                                                // IDARTICULO
+                                                                                                                // DEL
+                                                                                                                // ARTICULO
+                                                                                                                // QUE
+                                                                                                                // SE
+                                                                                                                // DESEA
+                                                                                                                // REPONER
       idT = sc.nextLine();
     } while (!idT.matches("[1-5][-][0-9][0-9]") && idT.length() > 0);
     if (idT.length() == 0)
@@ -337,13 +347,13 @@ public class Tienda {
     sc.nextLine();
     System.out.println("ALTA NUEVO CLIENTE");
 
-    // VALIDACION DNI CON REGEX
+    // VALIDACION DNI CON METODO VALIDA DNI
     do {
       System.out.println("INTRODUZCA DNI CLIENTE:");
       dniT = sc.nextLine().toUpperCase();
     } while (!validarDNI(dniT) || (clientes.containsKey(dniT)));
 
-    // NOMBRE SIN VALIDACION
+    // NOMBRE SIN VALIDACION GUARDADO EN MAYUSCULAS
     System.out.println("INTRODUZCA NOMBRE:");
     nombreT = sc.nextLine().toUpperCase();
 
@@ -351,7 +361,7 @@ public class Tienda {
     do {
       System.out.println("INTRODUZCA NUMERO DE TELEFONO:");
       telT = sc.next();
-    } while (!telT.matches("[0-9]{8,11}"));
+    } while (!telT.matches("^(?:(?:\\+|00)34)?[6789]\\d{8}$"));
 
     // VALIDACION EMAIL CON REGEX
     do {
@@ -368,6 +378,7 @@ public class Tienda {
   // (COMPARABLE)
 
   public void listaClientes() {
+    System.out.println("\t\t\tCLIENTES DADOS DE ALTA EN LA APLICACION:\n");
     clientes.values().stream().sorted().forEach(System.out::println);
   }
 
@@ -376,30 +387,30 @@ public class Tienda {
   public void modificaCliente() {
     String dniT, telefonoT, emailT;
     sc.nextLine();
-    System.out.println("MODIFICAR UN CLIENTE");
+    System.out.println("\t\t\tMODIFICAR UN CLIENTE");
     do {
-      System.out.println("INTRODUZCA EL DNI DEL CLIENTE A MODIFICAR:");
+      System.out.println("\t\t\tINTRODUZCA EL DNI DEL CLIENTE A MODIFICAR:");
       dniT = sc.nextLine().toUpperCase();
-    } while (!dniT.matches("^[0-9]{8}[A-Z]$"));
+    } while (!validarDNI(dniT));
 
     if (clientes.containsKey(dniT)) {
       int opcion = 0;
       do {
-        System.out.println("\n\t\t\t\tSE VA A MODIFICAR EL CONTACTO DE:\n" + "\t\t\t" + clientes.get(dniT).getNombre());
-        System.out.println("\t\t\t\t1 - MODIFICAR EL TELEFONO");
-        System.out.println("\t\t\t\t2 - MODIFICAR EL EMAIL");
-        System.out.println("\n\t\t\t\t9 - SALIR");
+        System.out.println("\n\t\t\tSE VA A MODIFICAR EL CONTACTO DE:\n" + "\t\t\t" + clientes.get(dniT).getNombre());
+        System.out.println("\n\t\t\t1 - MODIFICAR EL TELEFONO");
+        System.out.println("\t\t\t2 - MODIFICAR EL EMAIL");
+        System.out.println("\n\t\t\t9 - SALIR");
         opcion = sc.nextInt();
         switch (opcion) {
           case 1: {
             do {
-              System.out.println("\nINTRODUZCA NUMERO DE TELEFONO:");
+              System.out.println("\n\t\t\tINTRODUZCA NUMERO DE TELEFONO:");
               telefonoT = sc.next();
-            } while (!telefonoT.matches("[0-9]{8,11}"));
+            } while (!telefonoT.matches("^(?:(?:\\\\+|00)34)?[6789]\\\\d{8}$"));
             clientes.get(dniT).setTelefono(telefonoT);
-            System.out.println("\nSE HA MODIFICADO EL TELEFONO, EL NUEVO NUMERO PARA EL CONTACTO ES:");
-            System.out.println(clientes.get(dniT).getNombre() + clientes.get(dniT).getTelefono());
-            break;
+            System.out.println("\n\t\t\tSE HA MODIFICADO EL TELEFONO, EL NUEVO NUMERO PARA EL CONTACTO ES:");
+            System.out.println("\t\t\t"+clientes.get(dniT).getNombre() +" - "+ clientes.get(dniT).getTelefono());
+            return;
           }
           case 2: {
             do {
@@ -410,7 +421,7 @@ public class Tienda {
             clientes.get(dniT).setEmail(emailT);
             System.out.println("\nSE HA MODIFICADO EL EMAIL, EL NUEVO EMAIL PARA EL CONTACTO ES:");
             System.out.println(clientes.get(dniT).getNombre() + clientes.get(dniT).getEmail());
-            break;
+            return;
           }
 
         }
@@ -426,11 +437,11 @@ public class Tienda {
   public void bajaClientes() {
     String dniT;
     sc.nextLine();
-    System.out.println("BAJA DE UN CLIENTE");
+    System.out.println("\t\t\tBAJA DE UN CLIENTE");
     do {
-      System.out.println("INTRODUZCA EL DNI DEL CLIENTE A ELIMNAR:");
+      System.out.println("\t\t\tINTRODUZCA EL DNI DEL CLIENTE A ELIMNAR:");
       dniT = sc.nextLine().toUpperCase();
-    } while (!dniT.matches("^[0-9]{8}[A-Z]$"));
+    } while (!validarDNI(dniT));
 
     if (clientes.containsKey(dniT)) {
       Iterator<Pedido> it = pedidos.iterator();
@@ -440,10 +451,10 @@ public class Tienda {
         }
       }
       clientes.remove(dniT);
-      System.out.println("SE HA ELIMINADO EL CLIENTE Y SUS PEDIDOS");
+      System.out.println("\t\t\tSE HA ELIMINADO EL CLIENTE Y SUS PEDIDOS");
 
     } else {
-      System.out.println("NO EXISTE NINGUN CLIENTE CON ESE DNI.");
+      System.out.println("\t\t\tNO EXISTE NINGUN CLIENTE CON ESE DNI.");
     }
   }
 
@@ -622,7 +633,7 @@ public class Tienda {
       do {
         System.out.println("\n\t\t\tINTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
         idT = sc.next();
-        if (!idT.equals("99") && articulos.containsKey(idT)) {         
+        if (!idT.equals("99") && articulos.containsKey(idT)) {
           do {
             System.out.print("\t\t\t(" + articulos.get(idT).getDescripcion() + ") - UNIDADES? ");
             pedidasS = sc.next();
@@ -636,13 +647,13 @@ public class Tienda {
           } catch (StockAgotado e) {
             System.out.println(e.getMessage());
           } catch (StockInsuficiente e) {
-            System.out.println("\t\t\t"+e.getMessage());
+            System.out.println("\t\t\t" + e.getMessage());
             int disponibles = articulos.get(idT).getExistencias();
             System.out.print("\t\t\tQUIERES LAS " + disponibles + " UNIDADES DISPONIBLES? (S/N) ");
             opc = sc.next();
             if (opc.equalsIgnoreCase("S")) {
               CestaCompraAux.add(new LineaPedido(idT, disponibles));
-            }else{
+            } else {
               System.out.println("\n\t\t\tNO SE HAN AÑADIDO LAS UNIDADES DISPONIBLES DEL ARTICULO AL PEDIDO");
             }
           }
@@ -652,7 +663,8 @@ public class Tienda {
 
       // IMPRIMO EL PEDIDO Y SOLICITO ACEPTACION DEFINITIVA DEL MISMO
       for (LineaPedido l : CestaCompraAux) {
-        System.out.println("\t\t\t"+articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
+        System.out
+            .println("\t\t\t" + articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
       }
       System.out.println("\t\t\tESTE ES TU PEDIDO. PROCEDEMOS? (S/N)   ");
       opc = sc.next();
@@ -666,7 +678,7 @@ public class Tienda {
           articulos.get(l.getIdArticulo())
               .setExistencias(articulos.get(l.getIdArticulo()).getExistencias() - l.getUnidades());
         }
-      }else{
+      } else {
         System.out.println("\t\t\tSE HA CANCELADO EL PEDIDO PORQUE NO HAS ACEPTADO LA CONFIRMACIÓN FINAL.");
       }
     }
