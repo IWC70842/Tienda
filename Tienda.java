@@ -37,8 +37,8 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    // t.leerArchivos();
-    t.cargaDatos();
+    //t.leerArchivos(); // DESCOMENTAR DESPUES DESPUES DE CORRER POR PRIMERA VEZ EL PROGRAMA Y CARGAR LOS DATOS DE PRUEBA
+    t.cargaDatos(); // COMENTAR DESPUES DE REALIZAR LA COPIA DE SEGURIDAD DE LOS DATOS
     t.menu();
   }
 
@@ -176,32 +176,29 @@ public class Tienda {
 
     sc.nextLine();
     System.out.println("\t\t\tBAJA DE UN ARTICULO");
-    
+
     // VALIDAMOS EL ARTICULO MEDIANTE EXPRESION REGULAR
     do {
-        System.out.println("\n\t\t\tIdArticulo a ELIMINAR (IDENTIFICADOR):");
-        idT = sc.nextLine();
+      System.out.println("\n\t\t\tIdArticulo a ELIMINAR (IDENTIFICADOR):");
+      idT = sc.nextLine();
     } while (!idT.matches("[1-5][-][0-9][0-9]"));
-    
+
     // COMPROBAMOS QUE EL ARTICULO EXISTE
     if (articulos.containsKey(idT)) {
-        System.out.println("\n\t\t\t" + articulos.get(idT).getDescripcion());
-        
-        // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO ANTES DE ELIMINARLO
-        if (existePedidoConArticulo(idT)) {
-            System.out.println("\t\t\tNO SE PUEDE ELIMINAR EL ARTICULO PORQUE HAY PEDIDOS QUE LO CONTIENEN");
-        } else {
-            articulos.remove(idT);
-            System.out.println("\n\t\t\tARTICULO ELIMINADO");
-        }
+      System.out.println("\n\t\t\t" + articulos.get(idT).getDescripcion());
+
+      // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO
+      // ANTES DE ELIMINARLO
+      if (existePedidoConArticulo(idT)) {
+        System.out.println("\t\t\tNO SE PUEDE ELIMINAR EL ARTICULO PORQUE HAY PEDIDOS QUE LO CONTIENEN");
+      } else {
+        articulos.remove(idT);
+        System.out.println("\n\t\t\tARTICULO ELIMINADO");
+      }
     } else {
-        System.out.println("\n\t\t\tNO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
+      System.out.println("\n\t\t\tNO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
     }
-}
-
-  
-
-
+  }
 
   // METODO REPONER ARTICULOS
 
@@ -423,7 +420,7 @@ public class Tienda {
             } while (!telefonoT.matches("^(?:(?:\\\\+|00)34)?[6789]\\\\d{8}$"));
             clientes.get(dniT).setTelefono(telefonoT);
             System.out.println("\n\t\t\tSE HA MODIFICADO EL TELEFONO, EL NUEVO NUMERO PARA EL CONTACTO ES:");
-            System.out.println("\t\t\t"+clientes.get(dniT).getNombre() +" - "+ clientes.get(dniT).getTelefono());
+            System.out.println("\t\t\t" + clientes.get(dniT).getNombre() + " - " + clientes.get(dniT).getTelefono());
             return;
           }
           case 2: {
@@ -549,11 +546,12 @@ public class Tienda {
           .forEach(p -> {
             System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - "
-                + String.format("%.2f", totales.get(p.getIdPedido())));
+                + String.format("%.2f", totales.get(p.getIdPedido()))
+                + " -> " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
           });
     }
     if (opcion.equals("2")) {
-      System.out.println("\nPEDIDOS ORDENADOS POR FECHA DESGLOSADOS:");
+      System.out.println("\n\t\t\tPEDIDOS ORDENADOS POR FECHA DESGLOSADOS:");
       pedidos.stream().sorted(Comparator.comparing(Pedido::getFechaPedido)).forEach(p -> {
         System.out.println("\nPEDIDO: " + p.getIdPedido() + " - " + p.getClientePedido().getDni() + " - "
             + p.getClientePedido().getNombre() + " - " + p.getFechaPedido());
@@ -562,15 +560,16 @@ public class Tienda {
           System.out
               .println(articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
         }
-        System.out.println("TOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())));
+        System.out.println("TOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " -> "
+            + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
       });
 
     }
     if (opcion.equals("3")) {
       String importe;
-      System.out.println("\nPEDIDOS QUE SUPERAN UN IMPORTE DETERMINADO");
+      System.out.println("\n\t\t\tPEDIDOS QUE SUPERAN UN IMPORTE DETERMINADO (SIN IVA)");
       do {
-        System.out.println("\nPOR FAVOR INTRODUZCA EL IMPORTE:");
+        System.out.println("\n\t\t\tPOR FAVOR INTRODUZCA EL IMPORTE:");
         importe = sc.nextLine();
       } while (!esDouble(importe));
       double importeD = Double.parseDouble(importe);
@@ -581,7 +580,8 @@ public class Tienda {
           .forEach(p -> {
             System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - "
-                + String.format("%.2f", totales.get(p.getIdPedido())));
+                + String.format("%.2f", totales.get(p.getIdPedido()))
+                + " -> " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
           });
 
     }
@@ -604,16 +604,17 @@ public class Tienda {
   public void totalPedido() {
     String id;
     sc.nextLine();
+    System.out.println("\t\t\tPEDIDOS ACTUALES EN LA APLICACION:\n ");
     for (Pedido p : pedidos) {
-      System.out.println(p.getIdPedido() + p.getClientePedido().getNombre());
+      System.out.println("\t\t\tIDPEDIDO: " + p.getIdPedido() + " - CLIENTE: " + p.getClientePedido().getNombre());
       totales.put(p.getIdPedido(), totalPedido(p));
     }
     do {
-      System.out.println("\nINTRODUCE EL ID DEL PEDIDO PARA CALCULAR TOTAL: ");
-      id = sc.nextLine();
+      System.out.println("\n\t\t\tINTRODUCE EL ID DEL PEDIDO PARA CALCULAR TOTAL: ");
+      id = sc.nextLine().toUpperCase();
     } while (!totales.containsKey(id));
 
-    System.out.println("\nLISTADO DE ARTICULOS PEDIDO " + id + ":\n");
+    System.out.println("\n\t\t\tLISTADO DE ARTICULOS PEDIDO " + id + ":\n");
     for (Pedido p : pedidos) {
       if (p.getIdPedido().equals(id)) {
         for (LineaPedido lp : p.getCestaCompra()) {
@@ -623,7 +624,8 @@ public class Tienda {
       }
     }
 
-    System.out.println("\nEL TOTAL DEL PEDIDO " + id + " ES: " + totales.get(id) + " Euros");
+    System.out.println("\nEL TOTAL DEL PEDIDO " + id + " ES: " + totales.get(id) + " Euros -> " + totales.get(id) * 1.21
+        + " Euros IVA INCLUIDO");
   }
 
   // METODO PARA CREAR UN NUEVO PEDIDO
@@ -636,7 +638,7 @@ public class Tienda {
 
     sc.nextLine();
     do {
-      System.out.println("\n\t\t\tCLIENTE PEDIDO (DNI):");
+      System.out.println("\n\t\t\tINTRODUCE CLIENTE PEDIDO (DNI) O PULSA ENTER PARA REGRESAR:");
       dniT = sc.nextLine().toUpperCase();
       if (dniT.isBlank())
         break;
@@ -832,14 +834,14 @@ public class Tienda {
 
   public boolean existePedidoConArticulo(String idArticulo) {
     for (Pedido p : pedidos) {
-        for (LineaPedido lp : p.getCestaCompra()) {
-            if (lp.getIdArticulo().equals(idArticulo)) {
-                return true;
-            }
+      for (LineaPedido lp : p.getCestaCompra()) {
+        if (lp.getIdArticulo().equals(idArticulo)) {
+          return true;
         }
+      }
     }
     return false;
-}
+  }
 
   // METODOS DE BACKUP Y CARGA DE DATOS (PERSISTENCIA)
 
