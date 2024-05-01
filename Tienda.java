@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Scanner;
 
 // COSAS A PULIR
-// REVISAR SI SE PUEDE HACER CON UN METODO VALIDAR ID PEDIDO EN VEZ DE USAR UN REGEX DE CARACTERES 
+
 // IVA EN TOTALES
 
 public class Tienda {
@@ -336,7 +336,7 @@ public class Tienda {
     do {
       System.out.println("INTRODUZCA DNI CLIENTE:");
       dniT = sc.nextLine().toUpperCase();
-    } while (!dniT.matches("^[0-9]{8}[A-Z]$") || clientes.containsKey(dniT));
+    } while(!validarDNI(dniT) || (clientes.containsKey(dniT)));
 
     // NOMBRE SIN VALIDACION
     System.out.println("INTRODUZCA NOMBRE:");
@@ -856,5 +856,31 @@ public class Tienda {
       System.out.println("ERROR AL CREAR LA CARPETA: " + e);
     }
   }
+
+  // METODO AUXILIAR PARA VALIDAR SI UN DNI INTRODUCIDO ES VALIDO
+
+  public static boolean validarDNI(String dni) {
+    // Verificar que el DNI tiene un formato válido
+    if (dni.isBlank() || !dni.matches("\\d{8}[A-HJ-NP-TV-Z]")) {
+        return false;
+    }
+
+    // Extraer el número y la letra del DNI
+    String numeroStr = dni.substring(0, 8);
+    char letra = dni.charAt(8);
+
+    // Calcular la letra correspondiente al número del DNI
+    char letraCalculada = calcularLetraDNI(Integer.parseInt(numeroStr));
+
+    // Comparar la letra calculada con la letra proporcionada y devolver
+    // el resultado de la comparación TRUE/FALSE
+                 
+    return letra == letraCalculada;
+}
+
+private static char calcularLetraDNI(int numero) {
+    String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+    return letras.charAt(numero % 23);
+} 
 
 }
