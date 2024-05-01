@@ -171,3 +171,32 @@ public class DniNoExiste extends Exception{
       System.out.println("ERROR ENTRADA/SALIDA:" + e);
     }
   } */
+
+  /*
+   * public void bajaArticulos() {
+    String idT;
+
+    sc.nextLine();
+    System.out.println("\t\t\tBAJA DE UN ARTICULO");
+    // idArticulo VALIDADO CON EXPRESION REGULAR SENCILLA
+    do {
+      System.out.println("\n\t\t\tIdArticulo a ELIMINAR (IDENTIFICADOR):");
+      idT = sc.nextLine();
+    } while (!idT.matches("[1-5][-][0-9][0-9]"));
+    if (articulos.containsKey(idT)) {
+      System.out.println("\n\t\t\t"+articulos.get(idT).getDescripcion());
+      for(Pedido p:pedidos){
+        for(LineaPedido lp:p.getCestaCompra()){
+          if(lp.getIdArticulo().equals(idT)){
+            System.out.println("\t\t\tNO SE PUEDE ELIMINAR EL ARTICULO PORQUE HAY PEDIDOS QUE LO CONTIENEN");
+            return;
+          }
+        }
+      }
+      articulos.remove(idT);
+      System.out.println("\n\t\t\tARTICULO ELIMINADO");
+    } else {
+      System.out.println("\n\t\t\tNO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
+    }
+  }
+   */

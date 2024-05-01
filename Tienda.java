@@ -176,18 +176,32 @@ public class Tienda {
 
     sc.nextLine();
     System.out.println("\t\t\tBAJA DE UN ARTICULO");
-    // idArticulo VALIDADO CON EXPRESION REGULAR SENCILLA
+    
+    // VALIDAMOS EL ARTICULO MEDIANTE EXPRESION REGULAR
     do {
-      System.out.println("\n\t\t\tIdArticulo a ELIMINAR (IDENTIFICADOR):");
-      idT = sc.nextLine();
+        System.out.println("\n\t\t\tIdArticulo a ELIMINAR (IDENTIFICADOR):");
+        idT = sc.nextLine();
     } while (!idT.matches("[1-5][-][0-9][0-9]"));
+    
+    // COMPROBAMOS QUE EL ARTICULO EXISTE
     if (articulos.containsKey(idT)) {
-      articulos.remove(idT);
-      System.out.println("\n\t\t\tARTICULO ELIMINADO");
+        System.out.println("\n\t\t\t" + articulos.get(idT).getDescripcion());
+        
+        // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO ANTES DE ELIMINARLO
+        if (existePedidoConArticulo(idT)) {
+            System.out.println("\t\t\tNO SE PUEDE ELIMINAR EL ARTICULO PORQUE HAY PEDIDOS QUE LO CONTIENEN");
+        } else {
+            articulos.remove(idT);
+            System.out.println("\n\t\t\tARTICULO ELIMINADO");
+        }
     } else {
-      System.out.println("\n\t\t\tNO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
+        System.out.println("\n\t\t\tNO EXISTE ARTICULO CON ESE IDENTIFICADOR. NO SE PUEDE BORRAR");
     }
-  }
+}
+
+  
+
+
 
   // METODO REPONER ARTICULOS
 
@@ -813,6 +827,19 @@ public class Tienda {
           + " y sólo se dispone de: " + n);
     }
   }
+
+  // METODO PARA DETERMINAR SI UN ARTICULO ESTA IMPLICADO EN ALGUN PEDIDO
+
+  public boolean existePedidoConArticulo(String idArticulo) {
+    for (Pedido p : pedidos) {
+        for (LineaPedido lp : p.getCestaCompra()) {
+            if (lp.getIdArticulo().equals(idArticulo)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
   // METODOS DE BACKUP Y CARGA DE DATOS (PERSISTENCIA)
 
