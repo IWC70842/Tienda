@@ -1,3 +1,9 @@
+/**
+ *  Clase Principal de la Tienda
+ * 
+ *  @author José Antonio Pozo González IWC70842@educastur.es
+ *          Módulo de Programación de 1º de Desarrollo de Aplicaciones Web 2024
+ */
 import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.File;
@@ -16,10 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-// COSAS A PULIR
-
-// IVA EN TOTALES
-
 public class Tienda {
 
   Scanner sc = new Scanner(System.in);
@@ -37,7 +39,8 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    //t.leerArchivos(); // DESCOMENTAR DESPUES DESPUES DE CORRER POR PRIMERA VEZ EL PROGRAMA Y CARGAR LOS DATOS DE PRUEBA
+    // t.leerArchivos(); // DESCOMENTAR DESPUES DESPUES DE CORRER POR PRIMERA VEZ EL
+    // PROGRAMA Y CARGAR LOS DATOS DE PRUEBA
     t.cargaDatos(); // COMENTAR DESPUES DE REALIZAR LA COPIA DE SEGURIDAD DE LOS DATOS
     t.menu();
   }
@@ -167,6 +170,7 @@ public class Tienda {
 
     // AÑADIMOS EL ARTICULO A LA COLECCION HACIENDO PARSING DE LOS DATOS
     articulos.put(idT, new Articulo(idT, descT, Integer.parseInt(exT), Double.parseDouble(pvpT)));
+    System.out.println("\n\t\t\tEL ARTICULO " + descT + " SE HA AÑADIDO CON EXITO.");
   }
 
   // METODO PARA ELIMINAR UN ARTICULO
@@ -186,9 +190,7 @@ public class Tienda {
     // COMPROBAMOS QUE EL ARTICULO EXISTE
     if (articulos.containsKey(idT)) {
       System.out.println("\n\t\t\t" + articulos.get(idT).getDescripcion());
-
-      // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO
-      // ANTES DE ELIMINARLO
+      // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO ANTES DE ELIMINARLO
       if (existePedidoConArticulo(idT)) {
         System.out.println("\t\t\tNO SE PUEDE ELIMINAR EL ARTICULO PORQUE HAY PEDIDOS QUE LO CONTIENEN");
       } else {
@@ -206,15 +208,14 @@ public class Tienda {
     String stockMinimo, idT, stockMas;
     sc.nextLine();
     do {
-      System.out.println("\n\t\t\tINTRODUCE EL NUMERO DE UNIDADES PARA RUPTURA DE STOCK:");// PEDIMOS EL NUMERO DE
-                                                                                           // UNIDADES QUE CONSIDERAMOS
-                                                                                           // ROTURA DE STOCK
+      // PEDIMOS EL NUMERO DE UNIDADES QUE CONSIDERAMOS ROTURA DE STOCK
+      System.out.println("\n\t\tINTRODUCE EL NUMERO DE UNIDADES PARA RUPTURA DE STOCK:");
       stockMinimo = sc.nextLine();
     } while (!esInt(stockMinimo) && stockMinimo.length() > 0);
     if (stockMinimo.length() == 0)
       return;
 
-    System.out.println("\n\t\t\tLISTADO DE ARTICULOS CON " + Integer.parseInt(stockMinimo) + " UNIDADES O MENOS");
+    System.out.println("\n\t\tLISTADO DE ARTICULOS CON " + Integer.parseInt(stockMinimo) + " UNIDADES O MENOS");
     for (Articulo a : articulos.values()) {
       if (a.getExistencias() <= Integer.parseInt(stockMinimo)) {// MOSTRAMOS LAS UNIDADES CON ESE NUMERO MINIMO O MENOS
         System.out.println(a);
@@ -222,29 +223,24 @@ public class Tienda {
     }
 
     do {
-      System.out.println("\n\t\t\tINTRODUCE EL IdArticulo a REPONER (IDENTIFICADOR) O PULSA ENTER PARA SALIR:");// PEDIMOS
-                                                                                                                // EL
-                                                                                                                // IDARTICULO
-                                                                                                                // DEL
-                                                                                                                // ARTICULO
-                                                                                                                // QUE
-                                                                                                                // SE
-                                                                                                                // DESEA
-                                                                                                                // REPONER
+      // PEDIMOS EL IDARTICULO DEL ARTICULO QUE SE DESEA REPONER
+      System.out.println("\n\t\tINTRODUCE EL IdArticulo a REPONER (IDENTIFICADOR) O PULSA ENTER PARA SALIR:");
       idT = sc.nextLine();
     } while (!idT.matches("[1-5][-][0-9][0-9]") && idT.length() > 0);
     if (idT.length() == 0)
       return;
     if (articulos.containsKey(idT)) {// SI EL ARTICULO EXISTE PREGUNTAMOS LAS UNIDADES A REPONER
       do {
-        System.out.println("\n\t\t\tINTRODUCE EL NUMERO DE UNIDADES A REPONER O PULSA ENTER PARA SALIR:");
+        System.out.println("\n\t\tINTRODUCE EL NUMERO DE UNIDADES A REPONER O PULSA ENTER PARA SALIR:");
         stockMas = sc.nextLine();
       } while (!esInt(stockMas) && stockMas.length() > 0);
       if (stockMas.length() == 0)
         return;
       articulos.get(idT).setExistencias(articulos.get(idT).getExistencias() + Integer.parseInt(stockMas));
+      System.out.println(
+          "\n\t\tSE HA REPUESTO " + stockMas + " UNIDADES DEL ARTICULO " + articulos.get(idT).getDescripcion());
     } else {// SI EL ARTICULO NO EXISTE DAMOS FEEDBACK Y REGRESAMOS AL MENU
-      System.out.println("\n\t\t\tEL idArticulo INTRODUCIDO NO EXISTE");
+      System.out.println("\n\t\tEL idArticulo INTRODUCIDO NO EXISTE");
       return;
     }
 
@@ -283,7 +279,7 @@ public class Tienda {
 
     String[] secciones = { "TODAS", "PERIFERICOS", "ALMACENAMIENTO", "IMPRESORAS", "MONITORES", "COMPONENTES" };
     sc.nextLine();
-    System.out.println("\n\t\t\t[RETURN]ORDEN NORMAL POR idArticulo - PARA ORDENAR POR PRECIO < a >(-) > a <(+)");
+    System.out.println("\n\t\t[RETURN]ORDEN NORMAL POR idArticulo - PARA ORDENAR POR PRECIO < a >(-) > a <(+)");
     String opcion = sc.nextLine();
     if (seccion.equals("0")) {
       if (opcion.isBlank()) {
@@ -295,7 +291,7 @@ public class Tienda {
       }
     } else {
       System.out
-          .println("\n\t\t\tLISTADO DE LOS ARTICULOS DE LA SECCION (" + secciones[Integer.parseInt(seccion)] + ")");
+          .println("\n\t\tLISTADO DE LOS ARTICULOS DE LA SECCION (" + secciones[Integer.parseInt(seccion)] + ")");
       if (opcion.isBlank()) {
         articulos.values().stream().filter(a -> a.getIdArticulo().startsWith(seccion)).sorted()
             .forEach(System.out::println);
@@ -346,7 +342,8 @@ public class Tienda {
             break;
         }
       } else {
-        System.out.println("OPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
+        System.out
+            .println("\t\t\tOPCION INVALIDA. POR FAVOR INTRODUCE UN NUMERO \n\t\t\tDEL 1 AL 4, O UN 9 PARA SALIR.");
       }
     } while (opcion != 9);
   }
@@ -356,27 +353,27 @@ public class Tienda {
   public void nuevoCliente() {
     String dniT, nombreT, telT, emailT;
     sc.nextLine();
-    System.out.println("ALTA NUEVO CLIENTE");
+    System.out.println("\t\t\tALTA NUEVO CLIENTE");
 
     // VALIDACION DNI CON METODO VALIDA DNI
     do {
-      System.out.println("INTRODUZCA DNI CLIENTE:");
+      System.out.println("\t\t\tINTRODUZCA DNI CLIENTE:");
       dniT = sc.nextLine().toUpperCase();
     } while (!validarDNI(dniT) || (clientes.containsKey(dniT)));
 
     // NOMBRE SIN VALIDACION GUARDADO EN MAYUSCULAS
-    System.out.println("INTRODUZCA NOMBRE:");
+    System.out.println("\t\t\tINTRODUZCA NOMBRE:");
     nombreT = sc.nextLine().toUpperCase();
 
     // VALIDACIÓN TELEFONO CON REGEX
     do {
-      System.out.println("INTRODUZCA NUMERO DE TELEFONO:");
+      System.out.println("\t\t\tINTRODUZCA NUMERO DE TELEFONO:");
       telT = sc.next();
     } while (!telT.matches("^(?:(?:\\+|00)34)?[6789]\\d{8}$"));
 
     // VALIDACION EMAIL CON REGEX
     do {
-      System.out.println("INTRODUZCA EMAIL:");
+      System.out.println("\t\t\tINTRODUZCA EMAIL:");
       emailT = sc.next();
     } while (!emailT.matches(
         "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"));
@@ -389,7 +386,7 @@ public class Tienda {
   // (COMPARABLE)
 
   public void listaClientes() {
-    System.out.println("\t\t\tCLIENTES DADOS DE ALTA EN LA APLICACION:\n");
+    System.out.println("\t\tCLIENTES DADOS DE ALTA EN LA APLICACION:\n");
     clientes.values().stream().sorted().forEach(System.out::println);
   }
 
@@ -417,7 +414,7 @@ public class Tienda {
             do {
               System.out.println("\n\t\t\tINTRODUZCA NUMERO DE TELEFONO:");
               telefonoT = sc.next();
-            } while (!telefonoT.matches("^(?:(?:\\\\+|00)34)?[6789]\\\\d{8}$"));
+            } while (!telefonoT.matches("^(?:(?:\\+|00)34)?[6789]\\d{8}$"));
             clientes.get(dniT).setTelefono(telefonoT);
             System.out.println("\n\t\t\tSE HA MODIFICADO EL TELEFONO, EL NUEVO NUMERO PARA EL CONTACTO ES:");
             System.out.println("\t\t\t" + clientes.get(dniT).getNombre() + " - " + clientes.get(dniT).getTelefono());
@@ -425,20 +422,20 @@ public class Tienda {
           }
           case 2: {
             do {
-              System.out.println("\nINTRODUZCA NUEVO EMAIL:");
+              System.out.println("\n\t\t\tINTRODUZCA NUEVO EMAIL:");
               emailT = sc.next();
             } while (!emailT.matches(
                 "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"));
             clientes.get(dniT).setEmail(emailT);
-            System.out.println("\nSE HA MODIFICADO EL EMAIL, EL NUEVO EMAIL PARA EL CONTACTO ES:");
-            System.out.println(clientes.get(dniT).getNombre() + clientes.get(dniT).getEmail());
+            System.out.println("\n\t\t\tSE HA MODIFICADO EL EMAIL, EL NUEVO EMAIL PARA EL CONTACTO ES:");
+            System.out.println("\t\t\t" + clientes.get(dniT).getNombre() + " - " + clientes.get(dniT).getEmail());
             return;
           }
 
         }
       } while (opcion != 9);
     } else {
-      System.out.println("NO EXISTE NINGUN CLIENTE CON ESE DNI.");
+      System.out.println("\t\t\tNO EXISTE NINGUN CLIENTE CON ESE DNI.");
     }
 
   }
@@ -519,13 +516,13 @@ public class Tienda {
     String opcion;
     sc.nextLine();
     do {
-      System.out.println("\n\n\n\n\n\t\t\t\tLISTAR PEDIDOS\n");
-      System.out.println("\t\t\t\t1 - TODOS LOS PEDIDOS ORDENADOS POR IMPORTE TOTAL SIN DESGLOSAR");
-      System.out.println("\t\t\t\t2 - PEDIDOS ORDENADOS POR FECHA DESGLOSADOS");
-      System.out.println("\t\t\t\t3 - PEDIDOS QUE SUPERAN UN IMPORTE");
-      System.out.println("\n\t\t\t\t4 - SALIR");
+      System.out.println("\n\n\n\n\n\t\t\tLISTAR PEDIDOS\n");
+      System.out.println("\t\t\t1 - TODOS LOS PEDIDOS ORDENADOS POR IMPORTE TOTAL SIN DESGLOSAR");
+      System.out.println("\t\t\t2 - PEDIDOS ORDENADOS POR FECHA DESGLOSADOS");
+      System.out.println("\t\t\t3 - PEDIDOS QUE SUPERAN UN IMPORTE");
+      System.out.println("\n\t\t\t4 - SALIR");
       do {
-        System.out.println("\n\t\t\t\tSELECCIONA TU OPCION:");
+        System.out.println("\n\t\t\tSELECCIONA TU OPCION:");
         opcion = sc.nextLine();
       } while (!opcion.matches("[1-4]"));
       if (!opcion.equals("4")) {
@@ -540,45 +537,46 @@ public class Tienda {
     }
 
     if (opcion.equals("1")) {
-      System.out.println("\nPEDIDOS ORDENADOS DE MENOR A MAYOR IMPORTE TOTAL:\n");
+      System.out.println("\n\t\tPEDIDOS ORDENADOS DE MENOR A MAYOR IMPORTE TOTAL:\n");
       pedidos.stream()
           .sorted((p1, p2) -> Double.compare(totales.get(p1.getIdPedido()), totales.get(p2.getIdPedido())))
           .forEach(p -> {
-            System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni()
+            System.out.println("\t\t" + p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - "
                 + String.format("%.2f", totales.get(p.getIdPedido()))
                 + " -> " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
           });
     }
     if (opcion.equals("2")) {
-      System.out.println("\n\t\t\tPEDIDOS ORDENADOS POR FECHA DESGLOSADOS:");
+      System.out.println("\n\t\tPEDIDOS ORDENADOS POR FECHA DESGLOSADOS:");
       pedidos.stream().sorted(Comparator.comparing(Pedido::getFechaPedido)).forEach(p -> {
-        System.out.println("\nPEDIDO: " + p.getIdPedido() + " - " + p.getClientePedido().getDni() + " - "
+        System.out.println("\n\t\tPEDIDO: " + p.getIdPedido() + " - " + p.getClientePedido().getDni() + " - "
             + p.getClientePedido().getNombre() + " - " + p.getFechaPedido());
-        System.out.println("ARTICULOS:");
+        System.out.println("\t\tARTICULOS:");
         for (LineaPedido lp : p.getCestaCompra()) {
           System.out
-              .println(articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
+              .println(
+                  "\t\t" + articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
         }
-        System.out.println("TOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " -> "
+        System.out.println("\t\tTOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " -> "
             + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
       });
 
     }
     if (opcion.equals("3")) {
       String importe;
-      System.out.println("\n\t\t\tPEDIDOS QUE SUPERAN UN IMPORTE DETERMINADO (SIN IVA)");
+      System.out.println("\n\t\tPEDIDOS QUE SUPERAN UN IMPORTE DETERMINADO (SIN IVA)");
       do {
-        System.out.println("\n\t\t\tPOR FAVOR INTRODUZCA EL IMPORTE:");
+        System.out.println("\n\t\tPOR FAVOR INTRODUZCA EL IMPORTE:");
         importe = sc.nextLine();
       } while (!esDouble(importe));
       double importeD = Double.parseDouble(importe);
-      System.out.println("\nPEDIDOS SUPERIORES A " + importe + ":");
+      System.out.println("\n\t\tPEDIDOS SUPERIORES A " + importe + ":\n");
       pedidos.stream()
           .filter(p -> totales.get(p.getIdPedido()) > importeD)
           .sorted(Comparator.comparingDouble(p -> totales.get(p.getIdPedido())))
           .forEach(p -> {
-            System.out.println(p.getIdPedido() + " - " + p.getClientePedido().getDni()
+            System.out.println("\t\t" + p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - "
                 + String.format("%.2f", totales.get(p.getIdPedido()))
                 + " -> " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
@@ -604,28 +602,29 @@ public class Tienda {
   public void totalPedido() {
     String id;
     sc.nextLine();
-    System.out.println("\t\t\tPEDIDOS ACTUALES EN LA APLICACION:\n ");
+    System.out.println("\t\tPEDIDOS ACTUALES EN LA APLICACION:\n ");
     for (Pedido p : pedidos) {
-      System.out.println("\t\t\tIDPEDIDO: " + p.getIdPedido() + " - CLIENTE: " + p.getClientePedido().getNombre());
+      System.out.println("\t\tIDPEDIDO: " + p.getIdPedido() + " - CLIENTE: " + p.getClientePedido().getNombre());
       totales.put(p.getIdPedido(), totalPedido(p));
     }
     do {
-      System.out.println("\n\t\t\tINTRODUCE EL ID DEL PEDIDO PARA CALCULAR TOTAL: ");
+      System.out.println("\n\t\tINTRODUCE EL ID DEL PEDIDO PARA CALCULAR TOTAL: ");
       id = sc.nextLine().toUpperCase();
     } while (!totales.containsKey(id));
 
-    System.out.println("\n\t\t\tLISTADO DE ARTICULOS PEDIDO " + id + ":\n");
+    System.out.println("\n\t\tLISTADO DE ARTICULOS PEDIDO " + id + ":\n");
     for (Pedido p : pedidos) {
       if (p.getIdPedido().equals(id)) {
         for (LineaPedido lp : p.getCestaCompra()) {
-          System.out
-              .println(articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
+          System.out.println("\t\t" + articulos.get(lp.getIdArticulo()).getDescripcion() + " - "
+              + lp.getUnidades() + " UNIDADES");
         }
       }
     }
 
-    System.out.println("\nEL TOTAL DEL PEDIDO " + id + " ES: " + totales.get(id) + " Euros -> " + totales.get(id) * 1.21
-        + " Euros IVA INCLUIDO");
+    System.out.println(
+        "\n\t\tEL TOTAL DEL PEDIDO " + id + " ES:\n\t\t" + totales.get(id) + " Euros -> " + totales.get(id) * 1.21
+            + " Euros IVA INCLUIDO");
   }
 
   // METODO PARA CREAR UN NUEVO PEDIDO
@@ -638,20 +637,20 @@ public class Tienda {
 
     sc.nextLine();
     do {
-      System.out.println("\n\t\t\tINTRODUCE CLIENTE PEDIDO (DNI) O PULSA ENTER PARA REGRESAR:");
+      System.out.println("\n\t\tINTRODUCE CLIENTE PEDIDO (DNI) O PULSA ENTER PARA REGRESAR:");
       dniT = sc.nextLine().toUpperCase();
       if (dniT.isBlank())
         break;
     } while (!clientes.containsKey(dniT));
 
     if (!dniT.isBlank()) {
-      System.out.println("\t\t\tINTRODUZCA LOS ARTICULOS DEL PEDIDO UNO A UNO: ");
+      System.out.println("\t\tINTRODUZCA LOS ARTICULOS DEL PEDIDO UNO A UNO: ");
       do {
-        System.out.println("\n\t\t\tINTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
+        System.out.println("\n\t\tINTRODUCE CODIGO ARTICULO (99 PARA TERMINAR): ");
         idT = sc.next();
         if (!idT.equals("99") && articulos.containsKey(idT)) {
           do {
-            System.out.print("\t\t\t(" + articulos.get(idT).getDescripcion() + ") - UNIDADES? ");
+            System.out.print("\t\t(" + articulos.get(idT).getDescripcion() + ") - UNIDADES? ");
             pedidasS = sc.next();
           } while (!esInt(pedidasS));
 
@@ -663,14 +662,14 @@ public class Tienda {
           } catch (StockAgotado e) {
             System.out.println(e.getMessage());
           } catch (StockInsuficiente e) {
-            System.out.println("\t\t\t" + e.getMessage());
+            System.out.println("\t\t" + e.getMessage());
             int disponibles = articulos.get(idT).getExistencias();
-            System.out.print("\t\t\tQUIERES LAS " + disponibles + " UNIDADES DISPONIBLES? (S/N) ");
+            System.out.print("\t\tQUIERES LAS " + disponibles + " UNIDADES DISPONIBLES? (S/N) ");
             opc = sc.next();
             if (opc.equalsIgnoreCase("S")) {
               CestaCompraAux.add(new LineaPedido(idT, disponibles));
             } else {
-              System.out.println("\n\t\t\tNO SE HAN AÑADIDO LAS UNIDADES DISPONIBLES DEL ARTICULO AL PEDIDO");
+              System.out.println("\n\t\tNO SE HAN AÑADIDO LAS UNIDADES DISPONIBLES DEL ARTICULO AL PEDIDO");
             }
           }
 
@@ -680,9 +679,9 @@ public class Tienda {
       // IMPRIMO EL PEDIDO Y SOLICITO ACEPTACION DEFINITIVA DEL MISMO
       for (LineaPedido l : CestaCompraAux) {
         System.out
-            .println("\t\t\t" + articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
+            .println("\t\t" + articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
       }
-      System.out.println("\t\t\tESTE ES TU PEDIDO. PROCEDEMOS? (S/N)   ");
+      System.out.println("\t\tESTE ES TU PEDIDO. PROCEDEMOS? (S/N)   ");
       opc = sc.next();
       if (opc.equalsIgnoreCase("S")) {
         // ESCRIBO EL PEDIDO DEFINITIVAMENTE Y DESCUENTO LAS EXISTENCIAS PEDIDAS DE CADA
@@ -695,7 +694,7 @@ public class Tienda {
               .setExistencias(articulos.get(l.getIdArticulo()).getExistencias() - l.getUnidades());
         }
       } else {
-        System.out.println("\t\t\tSE HA CANCELADO EL PEDIDO PORQUE NO HAS ACEPTADO LA CONFIRMACIÓN FINAL.");
+        System.out.println("\t\tSE HA CANCELADO EL PEDIDO PORQUE NO HAS ACEPTADO LA CONFIRMACIÓN FINAL.");
       }
     }
   }
@@ -705,17 +704,19 @@ public class Tienda {
   public void eliminarPedido() {
     String id;
     sc.nextLine();
-    System.out.println("PEDIDOS ACTUALES EN EL SISTEMA:\n ");
+    System.out.println("\t\t\tPEDIDOS ACTUALES EN EL SISTEMA:\n ");
     for (Pedido p : pedidos) {
-      System.out.println(p.getIdPedido() + " " + p.getClientePedido().getNombre());
+      System.out.println("\t\t\t" + p.getIdPedido() + " " + p.getClientePedido().getNombre());
       totales.put(p.getIdPedido(), totalPedido(p));
     }
     do {
-      System.out.println("\nINTRODUCE EL ID DEL PEDIDO A ELIMINAR: ");
+      System.out.println("\n\t\t\tINTRODUCE EL ID DEL PEDIDO A ELIMINAR: ");
       id = sc.next().toUpperCase();
     } while (!totales.containsKey(id));
-    String pedidoid = id;// DECLARO LA VARIABLE PERIODO ID PORQUE DEBE SER UNA FINAL O NO MODIFICADA PARA
-                         // PODER USARLA EN LA LAMBDA
+    // DECLARO LA VARIABLE PERIODO ID PORQUE DEBER SER UNA FINAL O NO MODIFICADA
+    // PARA PODER USARLA EN LA LAMBDA
+    String pedidoid = id;
+    System.out.println("\n\t\t\tSE HA ELIMINADO EL PEDIDO " + id);
     pedidos.removeIf(p -> p.getIdPedido().equals(pedidoid));
   }
 
@@ -784,13 +785,16 @@ public class Tienda {
     }
   }
 
-  // METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA O EN
-  // LA PRIMERA EJECUCION
+  /*
+   * METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA O EN
+   * LA PRIMERA EJECUCION. SE CAMBIARON LOS DNI FICTICIOS POR DNI REALES PARA QUE
+   * FUNCIONARAN LOS METODOS QUE USAN validarDNI()
+   */
 
   public void cargaDatos() {
-    clientes.put("11111111R", new Cliente("11111111R", "ANA", "658111111", "ana@gmail.com"));
-    clientes.put("22222222H", new Cliente("22222222H", "LOLA", "649222222", "lola@gmail.com"));
-    clientes.put("33333333F", new Cliente("33333333F", "JUAN", "652333333", "juan@gmail.com"));
+    clientes.put("70733332Y", new Cliente("70733332Y", "ANA", "658111111", "ana@gmail.com"));
+    clientes.put("82284426V", new Cliente("82284426V", "LOLA", "649222222", "lola@gmail.com"));
+    clientes.put("22541447K", new Cliente("22541447K", "JUAN", "652333333", "juan@gmail.com"));
 
     articulos.put("1-11", new Articulo("1-11", "RATON LOGITECH", 14, 15));
     articulos.put("1-22", new Articulo("1-22", "TECLADO STANDAR", 9, 18));
@@ -805,15 +809,15 @@ public class Tienda {
 
     LocalDate hoy = LocalDate.now();
 
-    pedidos.add(new Pedido("11111111R-001/2024", clientes.get("11111111R"), hoy.minusDays(1),
+    pedidos.add(new Pedido("70733332Y-001/2024", clientes.get("70733332Y"), hoy.minusDays(1),
         new ArrayList<>(List.of(new LineaPedido("1-11", 1), new LineaPedido("2-11", 1)))));
-    pedidos.add(new Pedido("11111111R-002/2024", clientes.get("11111111R"), hoy.minusDays(2),
+    pedidos.add(new Pedido("70733332Y-002/2024", clientes.get("70733332Y"), hoy.minusDays(2),
         new ArrayList<>(List.of(new LineaPedido("4-11", 14), new LineaPedido("4-22", 4), new LineaPedido("4-33", 4)))));
-    pedidos.add(new Pedido("33333333F-001/2024", clientes.get("33333333F"), hoy.minusDays(3),
+    pedidos.add(new Pedido("22541447K-001/2024", clientes.get("22541447K"), hoy.minusDays(3),
         new ArrayList<>(List.of(new LineaPedido("3-22", 3), new LineaPedido("2-22", 3)))));
-    pedidos.add(new Pedido("33333333F-002/2024", clientes.get("33333333F"), hoy.minusDays(5),
+    pedidos.add(new Pedido("22541447K-002/2024", clientes.get("22541447K"), hoy.minusDays(5),
         new ArrayList<>(List.of(new LineaPedido("4-33", 3), new LineaPedido("2-11", 3)))));
-    pedidos.add(new Pedido("22222222H-001/2024", clientes.get("22222222H"), hoy.minusDays(4),
+    pedidos.add(new Pedido("82284426V-001/2024", clientes.get("82284426V"), hoy.minusDays(4),
         new ArrayList<>(List.of(new LineaPedido("2-11", 2), new LineaPedido("2-33", 2), new LineaPedido("4-33", 2)))));
   }
 
@@ -822,9 +826,9 @@ public class Tienda {
   public void stock(int unidadesPed, String id) throws StockAgotado, StockInsuficiente {
     int n = articulos.get(id).getExistencias();
     if (n == 0) {
-      throw new StockAgotado("Stock AGOTADO para el articulo: " + articulos.get(id).getDescripcion());
+      throw new StockAgotado("\t\tStock AGOTADO para el articulo: " + articulos.get(id).getDescripcion());
     } else if (n < unidadesPed) {
-      throw new StockInsuficiente("No hay Stock suficiente. Solicita " + unidadesPed + " de "
+      throw new StockInsuficiente("\t\tNo hay Stock suficiente. Solicita " + unidadesPed + " de "
           + articulos.get(id).getDescripcion()
           + " y sólo se dispone de: " + n);
     }
@@ -897,11 +901,11 @@ public class Tienda {
       while ((p = (Pedido) oisPedidos.readObject()) != null) {
         pedidos.add(p);
       }
-      System.out.println("\n\t\t\tDATOS IMPORTADOS CON EXITO.");
+      System.out.println("\n\t\tDATOS IMPORTADOS CON EXITO.");
 
     } catch (FileNotFoundException e) {
       System.out.println(
-          "\n\n\n\t\t\tERROR AL CARGAR LOS DATOS DE LOS ARCHIVOS DE BACKUP. NO EXISTEN UNO O VARIOS ARCHIVOS.\n\t\t\t"
+          "\n\n\n\t\tERROR AL CARGAR LOS DATOS DE LOS ARCHIVOS DE BACKUP. NO EXISTEN UNO O VARIOS ARCHIVOS.\n\t\t\t"
               + e.toString());
     } catch (EOFException e) {
 
@@ -927,12 +931,12 @@ public class Tienda {
         for (Cliente c : clientes.values()) {
           bfwClientes.write(c.getDni() + "," + c.getNombre() + "," + c.getTelefono() + "," + c.getEmail());
         }
-        System.out.println("\n\t\t\tCOPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
+        System.out.println("\n\t\tCOPIA DE CLIENTES EN FORMATO CSV REALIZADA CON EXITO.");
       } catch (IOException e) {
-        System.out.println("ERROR ENTRADA/SALIDA:" + e);
+        System.out.println("\t\tERROR ENTRADA/SALIDA:" + e);
       }
     } catch (Exception e) {
-      System.out.println("ERROR AL CREAR LA CARPETA: " + e);
+      System.out.println("\t\tERROR AL CREAR LA CARPETA: " + e);
     }
   }
 

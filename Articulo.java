@@ -1,3 +1,9 @@
+/**
+ *  Clase Articulo de la Aplicación Tienda
+ * 
+ *  @author José Antonio Pozo González IWC70842@educastur.es
+ *          Módulo de Programación de 1º de Desarrollo de Aplicaciones Web 2024
+ */
 import java.io.Serializable;
 
 public class Articulo implements Serializable, Comparable<Articulo> {
@@ -47,7 +53,7 @@ public class Articulo implements Serializable, Comparable<Articulo> {
 
   @Override
   public String toString() {
-    return "\t\t\tID: " + idArticulo + " - DESCRIPCION: " + descripcion + " - UNIDADES DISPONIBLES: " + existencias
+    return "\t\tID: " + idArticulo + " - DESCRIPCION: " + descripcion + " - UNIDADES DISPONIBLES: " + existencias
         + " - PRECIO: " + pvp;
   }
 

@@ -1,3 +1,9 @@
+/**
+ *  Clase LineaPedido de la Aplicación Tienda
+ * 
+ *  @author José Antonio Pozo González IWC70842@educastur.es
+ *          Módulo de Programación de 1º de Desarrollo de Aplicaciones Web 2024
+ */
 import java.io.Serializable;
 
 public class LineaPedido implements Serializable {

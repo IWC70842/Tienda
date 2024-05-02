@@ -1,3 +1,9 @@
+/**
+ *  Clase ComparaArticuloPorPrecio de la Aplicación Tienda
+ * 
+ *  @author José Antonio Pozo González IWC70842@educastur.es
+ *          Módulo de Programación de 1º de Desarrollo de Aplicaciones Web 2024
+ */
 import java.util.Comparator;
 
 public class ComparaArticuloPorPrecio implements Comparator<Articulo> {

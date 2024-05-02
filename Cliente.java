@@ -1,3 +1,9 @@
+/**
+ *  Clase Cliente de la Aplicación Tienda
+ * 
+ *  @author José Antonio Pozo González IWC70842@educastur.es
+ *          Módulo de Programación de 1º de Desarrollo de Aplicaciones Web 2024
+ */
 import java.io.Serializable;
 
 public class Cliente implements Serializable, Comparable<Cliente> {
@@ -48,7 +54,7 @@ public class Cliente implements Serializable, Comparable<Cliente> {
 
   @Override
   public String toString() {
-    return "\t\t\tCLIENTE -> DNI: " + dni + ", NOMBRE: " + nombre + ", TELEFONO: " + telefono + ", EMAIL: " + email;
+    return "\t\tCLIENTE -> DNI: " + dni + ", NOMBRE: " + nombre + ", TELEFONO: " + telefono + ", EMAIL: " + email;
   }
 
   @Override
