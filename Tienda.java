@@ -40,7 +40,7 @@ public class Tienda {
 
   public static void main(String[] args) {
     Tienda t = new Tienda();
-    // t.leerArchivos(); // DESCOMENTAR DESPUES DESPUES DE CORRER POR PRIMERA VEZ EL
+    //t.leerArchivos(); // DESCOMENTAR DESPUES DESPUES DE CORRER POR PRIMERA VEZ EL
     // PROGRAMA Y CARGAR LOS DATOS DE PRUEBA
     t.cargaDatos(); // COMENTAR DESPUES DE REALIZAR LA COPIA DE SEGURIDAD DE LOS DATOS
     t.menu();
@@ -265,14 +265,14 @@ public class Tienda {
       System.out.println("\t\t\t\t*                          *");
       System.out.println("\t\t\t\t*  6 - SALIR               *");
       System.out.println("\t\t\t\t****************************");
-      do{
-        System.out.println("\n\t\t\tSELECCIONA TU OPCION:");
+      do {
+        System.out.println("\n\t\t\t\tSELECCIONA TU OPCION:");
         opcion = sc.next();
-      }while (!opcion.matches("[0-6]"));
+      } while (!opcion.matches("[0-6]"));
       if (!opcion.equals("6")) {
         listados(opcion);
       }
-      
+
     } while (!opcion.equals("6"));
 
   }
@@ -548,7 +548,8 @@ public class Tienda {
             System.out.println("\t\t" + p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - TOTAL: "
                 + String.format("%.2f", totales.get(p.getIdPedido()))
-                + " EUROS -> TOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21)+" EUROS.");
+                + " EUROS -> TOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21)
+                + " EUROS.");
           });
     }
     if (opcion.equals("2")) {
@@ -562,8 +563,9 @@ public class Tienda {
               .println(
                   "\t\t" + articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
         }
-        System.out.println("\t\tTOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " EUROS -> TOTAL IVA INCLUIDO: "
-            + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21)+" EUROS.");
+        System.out.println(
+            "\t\tTOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " EUROS -> TOTAL IVA INCLUIDO: "
+                + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " EUROS.");
       });
 
     }
@@ -583,7 +585,8 @@ public class Tienda {
             System.out.println("\t\t" + p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - "
                 + String.format("%.2f", totales.get(p.getIdPedido()))
-                + " EUROS -> TOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " EUROS.");
+                + " EUROS -> TOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21)
+                + " EUROS.");
           });
 
     }
@@ -795,6 +798,13 @@ public class Tienda {
    * METODO TEMPORAL PARA LA CARGA DE DATOS HASTA IMPLEMENTAR LA PERSISTENCIA O EN
    * LA PRIMERA EJECUCION. SE CAMBIARON LOS DNI FICTICIOS POR DNI REALES PARA QUE
    * FUNCIONARAN LOS METODOS QUE USAN validarDNI()
+   * 
+   * DNI DE LOS CLIENTES DE PRUEBA:
+   * 
+   * 70733332Y
+   * 82284426V
+   * 22541447K
+   * 
    */
 
   public void cargaDatos() {
