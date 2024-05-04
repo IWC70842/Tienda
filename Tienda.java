@@ -153,7 +153,7 @@ public class Tienda {
     // DESCRIPCION DEL ARTICULO
 
     System.out.println("\n\t\t\tINTRODUZCA LA DESCRIPCION DEL ARTICULO:");
-    descT = sc.nextLine();
+    descT = sc.nextLine().toUpperCase();
 
     // VALIDACION DE LAS EXISTENCIAS MEDIANTE METODO AUXILIAR ESINT
 
@@ -253,24 +253,26 @@ public class Tienda {
   public void listarArticulos() {
     String opcion;
     do {
-      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
-      System.out.println("\t\t\t\t*   LISTAR ARTICULOS      *");
-      System.out.println("\t\t\t\t***************************");
-      System.out.println("\t\t\t\t*  0 - TODOS LOS ARTICULOS*");
-      System.out.println("\t\t\t\t*  1 - PERIFERICOS        *");
-      System.out.println("\t\t\t\t*  2 - ALMACENAMIENTO     *");
-      System.out.println("\t\t\t\t*  3 - IMPRESORAS         *");
-      System.out.println("\t\t\t\t*  4 - MONITORES          *");
-      System.out.println("\t\t\t\t*  5 - COMPONENETES       *");
-      System.out.println("\t\t\t\t*                         *");
-      System.out.println("\t\t\t\t*  6 - SALIR              *");
-      System.out.println("\t\t\t\t***************************");
-      do
+      System.out.println("\n\n\n\n\n\t\t\t\t****************************");
+      System.out.println("\t\t\t\t*     LISTAR ARTICULOS     *");
+      System.out.println("\t\t\t\t****************************");
+      System.out.println("\t\t\t\t*  0 - TODOS LOS ARTICULOS *");
+      System.out.println("\t\t\t\t*  1 - PERIFERICOS         *");
+      System.out.println("\t\t\t\t*  2 - ALMACENAMIENTO      *");
+      System.out.println("\t\t\t\t*  3 - IMPRESORAS          *");
+      System.out.println("\t\t\t\t*  4 - MONITORES           *");
+      System.out.println("\t\t\t\t*  5 - COMPONENETES        *");
+      System.out.println("\t\t\t\t*                          *");
+      System.out.println("\t\t\t\t*  6 - SALIR               *");
+      System.out.println("\t\t\t\t****************************");
+      do{
+        System.out.println("\n\t\t\tSELECCIONA TU OPCION:");
         opcion = sc.next();
-      while (!opcion.matches("[0-6]"));
+      }while (!opcion.matches("[0-6]"));
       if (!opcion.equals("6")) {
         listados(opcion);
       }
+      
     } while (!opcion.equals("6"));
 
   }
@@ -544,9 +546,9 @@ public class Tienda {
           .sorted((p1, p2) -> Double.compare(totales.get(p1.getIdPedido()), totales.get(p2.getIdPedido())))
           .forEach(p -> {
             System.out.println("\t\t" + p.getIdPedido() + " - " + p.getClientePedido().getDni()
-                + " - " + p.getClientePedido().getNombre() + " - "
+                + " - " + p.getClientePedido().getNombre() + " - TOTAL: "
                 + String.format("%.2f", totales.get(p.getIdPedido()))
-                + " -> " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
+                + " EUROS -> TOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21)+" EUROS.");
           });
     }
     if (opcion.equals("2")) {
@@ -560,8 +562,8 @@ public class Tienda {
               .println(
                   "\t\t" + articulos.get(lp.getIdArticulo()).getDescripcion() + " - " + lp.getUnidades() + " UNIDADES");
         }
-        System.out.println("\t\tTOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " -> "
-            + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
+        System.out.println("\t\tTOTAL: " + String.format("%.2f", totales.get(p.getIdPedido())) + " EUROS -> TOTAL IVA INCLUIDO: "
+            + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21)+" EUROS.");
       });
 
     }
@@ -581,7 +583,7 @@ public class Tienda {
             System.out.println("\t\t" + p.getIdPedido() + " - " + p.getClientePedido().getDni()
                 + " - " + p.getClientePedido().getNombre() + " - "
                 + String.format("%.2f", totales.get(p.getIdPedido()))
-                + " -> " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " IVA INCLUIDO");
+                + " EUROS -> TOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(p.getIdPedido()) * 1.21) + " EUROS.");
           });
 
     }
@@ -685,7 +687,7 @@ public class Tienda {
         System.out
             .println("\t\t" + articulos.get(l.getIdArticulo()).getDescripcion() + " - (" + l.getUnidades() + ")");
       }
-      System.out.println("\t\tESTE ES TU PEDIDO. PROCEDEMOS? (S/N)   ");
+      System.out.println("\t\tESTE ES EL PEDIDO, PROCEDEMOS? (S/N)   ");
       opc = sc.next();
       if (opc.equalsIgnoreCase("S")) {
         // ESCRIBO EL PEDIDO DEFINITIVAMENTE Y DESCUENTO LAS EXISTENCIAS PEDIDAS DE CADA
