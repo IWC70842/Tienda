@@ -1,3 +1,4 @@
+
 /**
  *  Clase Principal de la Tienda
  * 
@@ -190,7 +191,8 @@ public class Tienda {
     // COMPROBAMOS QUE EL ARTICULO EXISTE
     if (articulos.containsKey(idT)) {
       System.out.println("\n\t\t\t" + articulos.get(idT).getDescripcion());
-      // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO ANTES DE ELIMINARLO
+      // VERIFICAMOS QUE NO EXITE NINGUN PEDIDO EN EL QUE ARTICULO ESTE IMPLICADO
+      // ANTES DE ELIMINARLO
       if (existePedidoConArticulo(idT)) {
         System.out.println("\t\t\tNO SE PUEDE ELIMINAR EL ARTICULO PORQUE HAY PEDIDOS QUE LO CONTIENEN");
       } else {
@@ -472,16 +474,16 @@ public class Tienda {
     String opcionStr;
     int opcion = 0;
     do {
-      System.out.println("\n\n\n\n\n\t\t\t\t***************************");
-      System.out.println("\t\t\t\t*       MENU PEDIDOS      *");
-      System.out.println("\t\t\t\t***************************");
-      System.out.println("\t\t\t\t*  1 - NUEVO PEDIDO       *");
-      System.out.println("\t\t\t\t*  2 - LISTADOS           *");
-      System.out.println("\t\t\t\t*  3 - TOTAL PEDIDO       *");
-      System.out.println("\t\t\t\t*  4 - ELIMINAR PEDIDO    *");
-      System.out.println("\t\t\t\t*                         *");
-      System.out.println("\t\t\t\t*  9 - SALIR              *");
-      System.out.println("\t\t\t\t***************************");
+      System.out.println("\n\n\n\n\n\t\t\t\t******************************");
+      System.out.println("\t\t\t\t*       MENU PEDIDOS         *");
+      System.out.println("\t\t\t\t******************************");
+      System.out.println("\t\t\t\t*  1 - NUEVO PEDIDO          *");
+      System.out.println("\t\t\t\t*  2 - LISTADOS              *");
+      System.out.println("\t\t\t\t*  3 - TOTAL PEDIDO CONCRETO *");
+      System.out.println("\t\t\t\t*  4 - ELIMINAR PEDIDO       *");
+      System.out.println("\t\t\t\t*                            *");
+      System.out.println("\t\t\t\t*  9 - SALIR                 *");
+      System.out.println("\t\t\t\t******************************");
       opcionStr = sc.next();
       if (opcionStr.matches("^[1-4]|9$")) {
         opcion = Integer.parseInt(opcionStr);
@@ -623,8 +625,10 @@ public class Tienda {
     }
 
     System.out.println(
-        "\n\t\tEL TOTAL DEL PEDIDO " + id + " ES:\n\t\t" + totales.get(id) + " Euros -> " + totales.get(id) * 1.21
-            + " Euros IVA INCLUIDO");
+        "\n\t\tEL TOTAL DEL PEDIDO " + id + " ES:\n\n\t\tTOTAL NETO: " + totales.get(id) + "Euros." + "\n\t\tIVA 21%: "
+            + String.format("%.2f", totales.get(id) * 0.21)
+            + " Euros.\n\t\tTOTAL IVA INCLUIDO: " + String.format("%.2f", totales.get(id) * 1.21)
+            + " Euros.");
   }
 
   // METODO PARA CREAR UN NUEVO PEDIDO
@@ -797,7 +801,7 @@ public class Tienda {
     clientes.put("22541447K", new Cliente("22541447K", "JUAN", "652333333", "juan@gmail.com"));
 
     articulos.put("1-11", new Articulo("1-11", "RATON LOGITECH", 14, 15));
-    articulos.put("1-22", new Articulo("1-22", "TECLADO STANDAR", 9, 18));
+    articulos.put("1-22", new Articulo("1-22", "TECLADO STANDARD", 9, 18));
     articulos.put("2-11", new Articulo("2-11", "HDD SEAGATE 1TB", 16, 80));
     articulos.put("2-22", new Articulo("2-22", "SSD KINGSTOM 256GB", 9, 70));
     articulos.put("2-33", new Articulo("2-33", "SSD KINGSTOM 512GB", 15, 120));
